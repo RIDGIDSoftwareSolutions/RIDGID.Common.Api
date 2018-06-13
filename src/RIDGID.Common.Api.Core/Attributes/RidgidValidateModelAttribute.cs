@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
+using System.Linq;
 using System.Net;
 using System.Web.Http.Controllers;
-using RIDGID.Common.Api.Core.Objects;
-using RIDGID.Common.Api.Core.Utilities;
 using ActionFilterAttribute = System.Web.Http.Filters.ActionFilterAttribute;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {
-    public class RidgidModelValidationAttribute : ActionFilterAttribute
+    public class RidgidValidateModelAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

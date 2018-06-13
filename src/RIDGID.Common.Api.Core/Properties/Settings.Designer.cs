@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RIDGID.Common.Api.Core.Properties {
-    
-    
+namespace RIDGID.Common.Api.Core.Properties
+{
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {

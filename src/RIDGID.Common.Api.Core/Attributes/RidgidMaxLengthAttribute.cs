@@ -1,28 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
-using RIDGID.Common.Api.Core.Utilities;
+﻿using RIDGID.Common.Api.Core.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {
-    public class RidgidMaxLengthAttribute : MaxLengthAttribute
+    public class RidgidMaxLengthAttribute : RidgidValidationAttribute
     {
-        public int ErrorId { get; set; }
+        public int Length { get; set; }
 
-        public string CustomErrorMessage { get; set; }
-
-        public RidgidMaxLengthAttribute(int errorId, int length) : base(length)
+        public RidgidMaxLengthAttribute(int errorId, int length) : base(errorId)
         {
-            this.ErrorId = errorId;
+            Length = length;
         }
 
-        public RidgidMaxLengthAttribute(int errorId, int length, string customErrorMessage) : base(length)
+        public RidgidMaxLengthAttribute(int errorId, int length, string customErrorMessage) : base(errorId, customErrorMessage)
         {
-            this.ErrorId = errorId;
-            this.CustomErrorMessage = customErrorMessage;
+            Length = length;
+        }
+
+        public override bool IsValid(object value)
+        {
+            return new MaxLengthAttribute(Length).IsValid(value);
         }
 
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? base.FormatErrorMessage(fieldName);
+            var errorMessage = CustomErrorMessage ?? new MaxLengthAttribute(Length).FormatErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
         }
     }

@@ -1,28 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
-using RIDGID.Common.Api.Core.Utilities;
+﻿using RIDGID.Common.Api.Core.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {
-    public class RidgidRegularExpressionAttribute : RegularExpressionAttribute
+    public class RidgidRegularExpressionAttribute : RidgidValidationAttribute
     {
-        public int ErrorId { get; set; }
+        public string Regex { get; set; }
 
-        public string CustomErrorMessage { get; set; }
 
-        public RidgidRegularExpressionAttribute(int errorId, string regex) : base(regex)
+        public RidgidRegularExpressionAttribute(int errorId, string regex) : base(errorId)
         {
-            this.ErrorId = errorId;
+            Regex = regex;
         }
 
-        public RidgidRegularExpressionAttribute(int errorId, string regex, string customErrorMessage) : base(regex)
+        public RidgidRegularExpressionAttribute(int errorId, string regex, string customErrorMessage) : base(errorId,
+            customErrorMessage)
         {
-            this.ErrorId = errorId;
-            this.CustomErrorMessage = customErrorMessage;
+            Regex = regex;
+        }
+
+        public override bool IsValid(object value)
+        {
+            return new RegularExpressionAttribute(Regex).IsValid(value);
         }
 
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? base.FormatErrorMessage(fieldName);
+            var errorMessage =
+                CustomErrorMessage ?? new RegularExpressionAttribute(Regex).FormatErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
         }
     }

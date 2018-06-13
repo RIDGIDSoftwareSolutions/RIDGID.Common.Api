@@ -1,29 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
-using RIDGID.Common.Api.Core.Utilities;
+﻿using RIDGID.Common.Api.Core.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {
-    // The default error message from base class is "The FieldName is a required field."
-    public class RidgidRequiredAttribute : RequiredAttribute
+    public class RidgidRequiredAttribute : RidgidValidationAttribute
     {
-        public int ErrorId { get; set; }
-
-        public string CustomErrorMessage { get; set; }
-
-        public RidgidRequiredAttribute(int errorId)
+        public RidgidRequiredAttribute(int errorId) : base(errorId)
         {
-            this.ErrorId = errorId;
+
         }
 
-        public RidgidRequiredAttribute(int errorId, string customErrorMessage)
+        public RidgidRequiredAttribute(int errorId, string customErrorMessage) : base(errorId, customErrorMessage)
         {
-            this.ErrorId = errorId;
-            this.CustomErrorMessage = customErrorMessage;
+
         }
 
+        public override bool IsValid(object value)
+        {
+            return new RequiredAttribute().IsValid(value);
+        }
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? base.FormatErrorMessage(fieldName);
+            var errorMessage = CustomErrorMessage ?? new RequiredAttribute().FormatErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
         }
     }

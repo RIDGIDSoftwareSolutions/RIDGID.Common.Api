@@ -53,10 +53,12 @@
     <Compile Include="Attributes\RidgidEmailAddressAttribute.cs" />
     <Compile Include="Attributes\RidgidMaxLengthAttribute.cs" />
     <Compile Include="Attributes\RidgidMinLengthAttribute.cs" />
-    <Compile Include="Attributes\RidgidModelValidationAttribute.cs" />
+    <Compile Include="Attributes\RidgidValidateModelAttribute.cs" />
     <Compile Include="Attributes\RidgidRegularExpressionAttribute.cs" />
     <Compile Include="Attributes\RidgidRequiredAttribute.cs" />
     <Compile Include="Attributes\RidgidStringLengthAttribute.cs" />
+    <Compile Include="Attributes\RidgidValidationAttribute.cs" />
+    <Compile Include="Exceptions\InvalidModelAttributesException.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

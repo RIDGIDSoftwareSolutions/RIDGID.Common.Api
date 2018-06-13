@@ -1,29 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-using RIDGID.Common.Api.Core.Utilities;
+﻿using RIDGID.Common.Api.Core.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {
-    public class RidgidEmailAddressAttribute : ValidationAttribute
+    public class RidgidEmailAddressAttribute : RidgidValidationAttribute
     {
-        public int ErrorId { get; set; }
-
-        public string CustomErrorMessage { get; set; }
-
-        public RidgidEmailAddressAttribute(int errorId)
+        public RidgidEmailAddressAttribute(int errorId, string customErrorMessage) : base(errorId, customErrorMessage)
         {
-            this.ErrorId = errorId;
+
         }
 
-        public RidgidEmailAddressAttribute(int errorId, string customErrorMessage)
+        public RidgidEmailAddressAttribute(int errorId) : base(errorId)
         {
-            this.ErrorId = errorId;
-            this.CustomErrorMessage = customErrorMessage;
+
         }
 
         public override bool IsValid(object value)
         {
-            var emailAddressAttributeClass = new EmailAddressAttribute();
-            return emailAddressAttributeClass.IsValid(value);
+            return new EmailAddressAttribute().IsValid(value);
         }
 
         public override string FormatErrorMessage(string fieldName)

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RIDGID.Common.Api.Core.Exceptions;
+﻿using RIDGID.Common.Api.Core.Exceptions;
 using RIDGID.Common.Api.Core.Objects;
+using System.Linq;
 
 namespace RIDGID.Common.Api.Core.Utilities
 {

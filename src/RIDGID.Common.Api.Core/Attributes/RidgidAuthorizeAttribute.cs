@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using RIDGID.Common.Api.Core.Objects;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using Newtonsoft.Json;
-using RIDGID.Common.Api.Core.Objects;
 
 namespace RIDGID.Common.Api.Core.Attributes
 {

@@ -1,8 +1,7 @@
-﻿using System.Configuration;
-using System.IO;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
+using System.Configuration;
 
 namespace RIDGID.Common.Api.Core.Tests.UtilitiesTests
 {

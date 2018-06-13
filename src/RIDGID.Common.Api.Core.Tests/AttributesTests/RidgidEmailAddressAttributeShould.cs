@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RIDGID.Common.Api.Core.Attributes;
 using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 {

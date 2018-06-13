@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using RIDGID.Common.Api.Core.Objects;
-using RIDGID.Common.Api.Core.Utilities;
 
 namespace RIDGID.Common.Api.Core
 {

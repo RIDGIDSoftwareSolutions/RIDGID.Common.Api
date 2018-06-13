@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using RIDGID.Common.Api.Core.Attributes;
+﻿using RIDGID.Common.Api.Core.Attributes;
+using RIDGID.Common.Api.Core.Exceptions;
 using RIDGID.Common.Api.TestingUtilities.Exceptions;
 using RIDGID.Common.Api.TestingUtilities.FieldValidations;
 using Shouldly;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace RIDGID.Common.Api.TestingUtilities
 {
@@ -18,101 +20,116 @@ namespace RIDGID.Common.Api.TestingUtilities
             }
         }
 
-        private static void CheckValidation<T>(RidgidFieldValidation fieldValidation)
+        private static void CheckValidation<TModelType>(RidgidFieldValidation fieldValidation)
         {
-            var property = GetPropertyForFieldName<T>(fieldValidation);
+            ValidateAttributeTypes<TModelType>();
+
+            var property = GetPropertyForFieldName<TModelType>(fieldValidation);
+
             switch (fieldValidation.ValidationType)
             {
                 case RidgidValidationType.EmailAddressAttribute:
-                {
-                    ValidateEmailAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateEmailAttribute(fieldValidation, property);
+                        break;
+                    }
                 case RidgidValidationType.MaxLengthAttribute:
-                {
-                    ValidateMaxLengthAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateMaxLengthAttribute(fieldValidation, property);
+                        break;
+                    }
                 case RidgidValidationType.MinLengthAttribute:
-                {
-                    ValidateMinLengthAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateMinLengthAttribute(fieldValidation, property);
+                        break;
+                    }
                 case RidgidValidationType.RegularExpressionAttribute:
-                {
-                    ValidateRegularExpressionAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateRegularExpressionAttribute(fieldValidation, property);
+                        break;
+                    }
                 case RidgidValidationType.RequiredAttribute:
-                {
-                    ValidateRequiredAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateRequiredAttribute(fieldValidation, property);
+                        break;
+                    }
                 case RidgidValidationType.StringLengthAttribute:
-                {
-                    ValidateStringLengthAttribute<T>(fieldValidation, property);
-                    break;
-                }
+                    {
+                        ValidateStringLengthAttribute(fieldValidation, property);
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private static void ValidateStringLengthAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateAttributeTypes<TModelType>()
         {
-            var attribute = (RidgidStringLengthAttribute) property.GetCustomAttribute(
+            foreach (var property in GetProperties<TModelType>())
+            {
+                if (property.GetCustomAttributes(typeof(RidgidValidationAttribute), false).Length >
+                    property.GetCustomAttributes(typeof(ValidationAttribute), false).Length)
+                {
+                    throw new InvalidModelAttributesException();
+                }
+            }
+        }
+
+        private static void ValidateStringLengthAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        {
+            var attribute = (RidgidStringLengthAttribute)property.GetCustomAttribute(
                                 typeof(RidgidStringLengthAttribute), false) ??
                             throw new RidgidStringLengthAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
-            attribute.MininumLength.ShouldBe(((RidgidStringLengthFieldValidation) fieldValidation)
+            attribute.MininumLength.ShouldBe(((RidgidStringLengthFieldValidation)fieldValidation)
                 .MinLength);
-            attribute.MaximumLength.ShouldBe(((RidgidStringLengthFieldValidation) fieldValidation)
+            attribute.MaximumLength.ShouldBe(((RidgidStringLengthFieldValidation)fieldValidation)
                 .MaxLength);
         }
 
-        private static void ValidateRequiredAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateRequiredAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
         {
-            var attribute = (RidgidRequiredAttribute) property.GetCustomAttribute(
+            var attribute = (RidgidRequiredAttribute)property.GetCustomAttribute(
                                 typeof(RidgidRequiredAttribute), false) ??
                             throw new RidgidRequiredAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
         }
 
-        private static void ValidateRegularExpressionAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateRegularExpressionAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
         {
-            var attribute = (RidgidRegularExpressionAttribute) property.GetCustomAttribute(
+            var attribute = (RidgidRegularExpressionAttribute)property.GetCustomAttribute(
                                 typeof(RidgidRegularExpressionAttribute), true) ??
                             throw new RidgidRegularExpressionAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
-            attribute.Pattern.ShouldBe(((RidgidRegularExpressionFieldValidation) fieldValidation).Regex);
+            attribute.Regex.ShouldBe(((RidgidRegularExpressionFieldValidation)fieldValidation).Regex);
         }
 
-        private static void ValidateMinLengthAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateMinLengthAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
         {
-            var attribute = (RidgidMinLengthAttribute) property.GetCustomAttribute(
+            var attribute = (RidgidMinLengthAttribute)property.GetCustomAttribute(
                                 typeof(RidgidMinLengthAttribute), true) ??
                             throw new RidgidMinLengthAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
-            attribute.Length.ShouldBe(((RidgidMinLengthFieldValidation) fieldValidation).MinLength);
+            attribute.Length.ShouldBe(((RidgidMinLengthFieldValidation)fieldValidation).MinLength);
         }
 
-        private static void ValidateMaxLengthAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateMaxLengthAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
         {
-            var attribute = (RidgidMaxLengthAttribute) property.GetCustomAttribute(
+            var attribute = (RidgidMaxLengthAttribute)property.GetCustomAttribute(
                                 typeof(RidgidMaxLengthAttribute), true) ??
                             throw new RidgidMaxLengthAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
-            attribute.Length.ShouldBe(((RidgidMaxLengthFieldValidation) fieldValidation).MaxLength);
+            attribute.Length.ShouldBe(((RidgidMaxLengthFieldValidation)fieldValidation).MaxLength);
         }
 
-        private static void ValidateEmailAttribute<T>(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        private static void ValidateEmailAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
         {
-            var attribute = (RidgidEmailAddressAttribute) property.GetCustomAttribute(
+            var attribute = (RidgidEmailAddressAttribute)property.GetCustomAttribute(
                                 typeof(RidgidEmailAddressAttribute), false) ??
                             throw new RidgidEmailAddressAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
@@ -120,10 +137,15 @@ namespace RIDGID.Common.Api.TestingUtilities
         }
 
 
-        private static PropertyInfo GetPropertyForFieldName<T>(RidgidFieldValidation fieldValidation)
+        private static PropertyInfo GetPropertyForFieldName<TModelType>(RidgidFieldValidation fieldValidation)
         {
-            return typeof(T).GetProperty(fieldValidation.FieldName) ??
+            return typeof(TModelType).GetProperty(fieldValidation.FieldName) ??
                    throw new FieldNotFoundException(fieldValidation.FieldName);
+        }
+
+        private static PropertyInfo[] GetProperties<TModelType>()
+        {
+            return typeof(TModelType).GetProperties();
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System.Configuration;
+﻿using NUnit.Framework;
+using RIDGID.Common.Api.Core.Attributes;
+using RIDGID.Common.Api.Core.Utilities;
+using Shouldly;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
-using NUnit.Framework;
-using RIDGID.Common.Api.Core.Attributes;
-using RIDGID.Common.Api.Core.Utilities;
-using Shouldly;
 
 namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 {
@@ -23,7 +23,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void DoNothingWhenModelIsValid()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
 
             //--Act
@@ -37,11 +37,11 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnSnakeCaseForOneModelStateErrorWhenSnakeCaseIsSet()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
-                Errors = {ModelStateCustomErrorMessage.Create(1, "ErrorMessage")}
+                Errors = { ModelStateCustomErrorMessage.Create(1, "ErrorMessage") }
             };
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.Settings["snakecase"].Value = "true";
@@ -61,7 +61,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnSnakeCaseForTwoModelStateErrorsWhenSnakeCaseIsSet()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
@@ -90,7 +90,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnCamelCaseForOneModelStateErrorByDefault()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
@@ -114,7 +114,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnCamelCaseForTwoModelStateErrorsByDefault()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
@@ -143,7 +143,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnCamelCaseForOneModelStateErrorWhenExplicitlyRequested()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
@@ -167,7 +167,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
         public void ReturnCamelCaseForTwoModelStateErrorsWhenExplicitlyRequested()
         {
             //--Arrange
-            var attribute = new RidgidModelValidationAttribute();
+            var attribute = new RidgidValidateModelAttribute();
             var actionContext = new HttpActionContext();
             actionContext.ModelState["Field"] = new ModelState
             {
