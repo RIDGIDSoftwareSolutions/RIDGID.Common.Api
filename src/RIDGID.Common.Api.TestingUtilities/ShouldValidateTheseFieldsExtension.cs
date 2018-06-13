@@ -14,6 +14,8 @@ namespace RIDGID.Common.Api.TestingUtilities
     {
         public static void ShouldValidateTheseFields<TModelType>(this TModelType model, List<RidgidFieldValidation> fieldValidations)
         {
+            ValidateAttributeTypes<TModelType>();
+
             foreach (var fieldValidation in fieldValidations)
             {
                 CheckValidation<TModelType>(fieldValidation);
@@ -22,8 +24,6 @@ namespace RIDGID.Common.Api.TestingUtilities
 
         private static void CheckValidation<TModelType>(RidgidFieldValidation fieldValidation)
         {
-            ValidateAttributeTypes<TModelType>();
-
             var property = GetPropertyForFieldName<TModelType>(fieldValidation);
 
             switch (fieldValidation.ValidationType)
@@ -67,8 +67,10 @@ namespace RIDGID.Common.Api.TestingUtilities
         {
             foreach (var property in GetProperties<TModelType>())
             {
-                if (property.GetCustomAttributes(typeof(RidgidValidationAttribute), false).Length >
-                    property.GetCustomAttributes(typeof(ValidationAttribute), false).Length)
+                var customAttrs = property.GetCustomAttributes(typeof(RidgidValidationAttribute), false);
+                var nonCustomAttrs = property.GetCustomAttributes(typeof(ValidationAttribute), false);
+
+                if (customAttrs.Length < nonCustomAttrs.Length)
                 {
                     throw new InvalidModelAttributesException();
                 }

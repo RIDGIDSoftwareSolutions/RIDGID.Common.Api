@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RIDGID.Common.Api.Core.Attributes;
+using RIDGID.Common.Api.Core.Exceptions;
 using RIDGID.Common.Api.TestingUtilities.Exceptions;
 using RIDGID.Common.Api.TestingUtilities.FieldValidations;
 using Shouldly;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RIDGID.Common.Api.TestingUtilities.Tests
 {
@@ -574,6 +576,24 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 });
         }
+
+        [Test]
+        public void ThrowExceptionIfNonRidgidAttributeIsOnModel()
+        {
+            //--Arrange
+            var model = new ModelWithNonRidgidAttribute();
+
+            //--Act
+            Should.Throw<InvalidModelAttributesException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>()));
+        }
+
+    }
+
+    internal class ModelWithNonRidgidAttribute
+    {
+        [Required]
+        public int Field { get; set; }
     }
 
     internal class ShouldValidateExtensionTestModel

@@ -58,7 +58,7 @@
     <Compile Include="AttributesTests\RidgidEmailAddressAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidMaxLengthAttributeshould.cs" />
     <Compile Include="AttributesTests\RidgidMinLengthAttributeShould.cs" />
-    <Compile Include="AttributesTests\RidgidModelValidationAttributeShould.cs" />
+    <Compile Include="AttributesTests\RidgidValidateModelAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidRegularExpressionAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidRequiredAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidStringLengthAttributeShould.cs" />

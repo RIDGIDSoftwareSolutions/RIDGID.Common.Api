@@ -11,7 +11,7 @@ using System.Web.Http.ModelBinding;
 namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 {
     [TestFixture]
-    public class RidgidModelValidationAttributeShould
+    public class RidgidValidateModelAttributeShould
     {
         [SetUp]
         public void SetUp()
