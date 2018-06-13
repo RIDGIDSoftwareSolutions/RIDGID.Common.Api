@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using RIDGID.Common.Api.Core.Objects;
+﻿using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
@@ -17,12 +15,12 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         public RidgidAuthorizeAttribute(int errorId)
         {
-            this.ErrorId = errorId;
+            ErrorId = errorId;
         }
 
         public RidgidAuthorizeAttribute()
         {
-            this.ErrorId = 1;
+            ErrorId = 1;
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -35,13 +33,7 @@ namespace RIDGID.Common.Api.Core.Attributes
                     ErrorId = this.ErrorId
                 }
             };
-
-            actionContext.Response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.Unauthorized,
-                Content = new StringContent(JsonConvert.SerializeObject(errorMessages), Encoding.UTF8,
-                    "application/json")
-            };
+            actionContext.Response = FormatResponseMessage.CreateMessage(errorMessages, HttpStatusCode.Unauthorized);
         }
     }
 }

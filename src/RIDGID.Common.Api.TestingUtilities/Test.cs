@@ -1,9 +1,9 @@
-﻿using System.Net;
-using System.Threading;
-using System.Web.Http;
-using RIDGID.Common.Api.Core.Objects;
+﻿using RIDGID.Common.Api.Core.Objects;
 using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
+using System.Net;
+using System.Threading;
+using System.Web.Http;
 
 namespace RIDGID.Common.Api.TestingUtilities
 {
