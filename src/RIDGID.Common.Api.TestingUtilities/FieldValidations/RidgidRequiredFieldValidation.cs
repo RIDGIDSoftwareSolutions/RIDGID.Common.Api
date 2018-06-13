@@ -1,4 +1,4 @@
-﻿namespace RIDGID.Common.Api.TestingUtilities.FieldValidation
+﻿namespace RIDGID.Common.Api.TestingUtilities.FieldValidations
 {
     public class RidgidRequiredFieldValidation : RidgidFieldValidation
     {

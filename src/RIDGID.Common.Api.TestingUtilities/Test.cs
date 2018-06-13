@@ -1,13 +1,15 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Web.Http;
+using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
 
 namespace RIDGID.Common.Api.TestingUtilities
 {
-    public class ResponseContent
+    public class Test
     {
-        public static string GetContentAsString(IHttpActionResult actionResult, HttpStatusCode expectedStatusCode)
+        public static string Content(IHttpActionResult actionResult, HttpStatusCode expectedStatusCode)
         {
             var result = actionResult.ExecuteAsync(new CancellationToken()).Result;
             result.StatusCode.ShouldBe(expectedStatusCode);
@@ -16,6 +18,14 @@ namespace RIDGID.Common.Api.TestingUtilities
             contentAsString.ShouldNotBeNull();
             contentAsString.Length.ShouldBeGreaterThan(0);
             return contentAsString;
+        }
+
+        public static ErrorsResponse ErrorsResponse(string content, int errorCount)
+        {
+            var errorResponse = FormatResponseMessage.DeserializeMessage<ErrorsResponse>(content);
+            errorResponse.ShouldNotBeNull();
+            errorResponse.Errors.Count.ShouldBe(errorCount);
+            return errorResponse;
         }
     }
 }

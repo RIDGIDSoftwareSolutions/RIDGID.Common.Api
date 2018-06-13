@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,21 +57,28 @@
     <Compile Include="Attributes\RidgidRegularExpressionAttribute.cs" />
     <Compile Include="Attributes\RidgidRequiredAttribute.cs" />
     <Compile Include="Attributes\RidgidStringLengthAttribute.cs" />
-    <Compile Include="Controllers\RidgidApiController.cs" />
-    <Compile Include="ErrorHandling\HttpGenericResult.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RidgidApiController.cs" />
+    <Compile Include="Utilities\FormatResponseMessage.cs" />
+    <Compile Include="Utilities\HttpGenericResult.cs" />
     <Compile Include="Exceptions\InvalidModelStateException.cs" />
     <Compile Include="Objects\ErrorMessage.cs" />
     <Compile Include="Objects\ErrorsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\CamelCaseToSnakeCaseConverter.cs" />
-    <Compile Include="Utilities\ModelValidationUtilities.cs" />
-    <Compile Include="Utilities\ParseAppConfig.cs" />
-    <Compile Include="Utilities\SnakeCasePropertyNamesContractResolver.cs" />
-    <Compile Include="Utilities\UpperCamelCaseToSnakeCaseConverter.cs" />
+    <Compile Include="Utilities\ModelStateCustomErrorMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

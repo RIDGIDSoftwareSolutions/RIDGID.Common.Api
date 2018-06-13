@@ -38,7 +38,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             result.Count.ShouldBe(1);
             var defaultErrorMsg = new RequiredAttribute().FormatErrorMessage(nameof(model.Field));
             result[0].ErrorMessage
-                .ShouldBe(ModelValidationUtilities.CreateSpecialModelValidationMessage(1, defaultErrorMsg));
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
             result[0].ErrorMessage
-                .ShouldBe(ModelValidationUtilities.CreateSpecialModelValidationMessage(1, "CustomMessage"));
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, "CustomMessage"));
         }
 
         [Test]

@@ -87,7 +87,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
             result[0].ErrorMessage
-                .ShouldBe(ModelValidationUtilities.CreateSpecialModelValidationMessage(1, "CustomMessage"));
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, "CustomMessage"));
         }
 
         [Test]

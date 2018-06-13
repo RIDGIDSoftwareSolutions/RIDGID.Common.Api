@@ -24,7 +24,7 @@ namespace RIDGID.Common.Api.Core.Attributes
         public override string FormatErrorMessage(string fieldName)
         {
             var errorMessage = CustomErrorMessage ?? base.FormatErrorMessage(fieldName);
-            return ModelValidationUtilities.CreateSpecialModelValidationMessage(ErrorId, errorMessage);
+            return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
         }
     }
 }

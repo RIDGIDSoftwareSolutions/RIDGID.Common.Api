@@ -48,26 +48,24 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Deserialize.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\RidgidEmailAddressAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidEmailAddressFieldValidation.cs" />
-    <Compile Include="FieldValidation\RidgidFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidEmailAddressFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidFieldValidation.cs" />
     <Compile Include="Exceptions\RidgidMaxLengthAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidMaxLengthFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidMaxLengthFieldValidation.cs" />
     <Compile Include="Exceptions\RidgidMinLengthAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidMinLengthFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidMinLengthFieldValidation.cs" />
     <Compile Include="Exceptions\RidgidRegularExpressionAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidRegularExpressionFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidRegularExpressionFieldValidation.cs" />
     <Compile Include="Exceptions\RidgidRequiredAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidRequiredFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidRequiredFieldValidation.cs" />
     <Compile Include="Exceptions\RidgidStringLengthAttributeNotFoundException.cs" />
-    <Compile Include="FieldValidation\RidgidStringLengthFieldValidation.cs" />
-    <Compile Include="FieldValidation\RidgidValidationType.cs" />
-    <Compile Include="ResponseContent.cs" />
+    <Compile Include="FieldValidations\RidgidStringLengthFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidValidationType.cs" />
     <Compile Include="ShouldValidateTheseFieldsExtension.cs" />
-    <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RIDGID.Common.Api.Core\Core.csproj">

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using RIDGID.Common.Api.Core.ErrorHandling;
 using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
 
-namespace RIDGID.Common.Api.Core.Controllers
+namespace RIDGID.Common.Api.Core
 {
     public class RidgidApiController : ApiController
     {
@@ -33,11 +33,6 @@ namespace RIDGID.Common.Api.Core.Controllers
         public virtual IHttpActionResult NoContent()
         {
             return new HttpGenericResult(this, HttpStatusCode.NoContent, null);
-        }
-
-        public virtual IHttpActionResult Response(ErrorsResponse errorsResponse, HttpStatusCode httpStatusCode)
-        {
-            return new HttpGenericResult(this, httpStatusCode, errorsResponse);
         }
 
         public virtual IHttpActionResult BadRequest(int errorId, string debugErrorMessage)

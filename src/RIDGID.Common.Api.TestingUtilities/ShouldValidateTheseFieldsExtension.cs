@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using RIDGID.Common.Api.Core.Attributes;
 using RIDGID.Common.Api.TestingUtilities.Exceptions;
-using RIDGID.Common.Api.TestingUtilities.FieldValidation;
+using RIDGID.Common.Api.TestingUtilities.FieldValidations;
 using Shouldly;
 
 namespace RIDGID.Common.Api.TestingUtilities

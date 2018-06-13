@@ -5,11 +5,11 @@ using RIDGID.Common.Api.Core.Objects;
 
 namespace RIDGID.Common.Api.Core.Utilities
 {
-    public class ModelValidationUtilities
+    public class ModelStateCustomErrorMessage
     {
         private const char Separator = '|';
 
-        public static ErrorMessage ParseModelStateErrorMessage(string modelStateErrorMessage)
+        public static ErrorMessage Parse(string modelStateErrorMessage)
         {
             if (!modelStateErrorMessage.Contains(Separator))
             {
@@ -24,20 +24,10 @@ namespace RIDGID.Common.Api.Core.Utilities
             };
         }
 
-        public static List<ErrorMessage> ParseModelStateErrorMessages(List<string> modelStateErrorMessages)
-        {
-            return modelStateErrorMessages.Select(ParseModelStateErrorMessage).ToList();
-        }
-
-        public static string CreateSpecialModelValidationMessage(int errorId, string baseMessage)
+        public static string Create(int errorId, string baseMessage)
         {
             var str = errorId.ToString() + Separator + baseMessage;
             return str;
-        }
-
-        public static string CreateRequiredMessage(string fieldName)
-        {
-            return "The " + fieldName + " field is required.";
         }
     }
 }

@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -62,18 +63,12 @@
     <Compile Include="AttributesTests\RidgidRequiredAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidStringLengthAttributeShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UtilitiesTests\CamelCaseToSnakeCaseConverterShould.cs" />
-    <Compile Include="UtilitiesTests\SnakeCasePropertyNamesContractResolverShould.cs" />
-    <Compile Include="UtilitiesTests\UpperCamelCaseToSnakeCaseConverterShould.cs" />
+    <Compile Include="UtilitiesTests\FormatResponseMessageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RIDGID.Common.Api.Core\Core.csproj">
       <Project>{9c15507b-7574-488c-a72d-72f0b7623faf}</Project>
       <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RIDGID.Common.Api.TestingUtilities\TestingUtilities.csproj">
-      <Project>{161B6626-EFD1-4BFA-BA34-2E75215013A2}</Project>
-      <Name>TestingUtilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
