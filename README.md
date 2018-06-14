@@ -46,8 +46,8 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
     Etc.
   
  
-## Snake case property names
-In order to format the response body to use snakecase property names like the following:
+### Snakecase Property Names
+To make the response body like the following:
 
 ```json
 {
@@ -55,15 +55,10 @@ In order to format the response body to use snakecase property names like the fo
     {
       "debug_error_message": "Username must be between 6 and 255 characters long.",
       "error_id": 1
-    },
-    {
-      "debug_error_message": "Username cannot contain special characters.",
-      "error_id": 2
     }
   ]
 }
 ```
-
 
 Add to your API's app.config appSettings:
 
