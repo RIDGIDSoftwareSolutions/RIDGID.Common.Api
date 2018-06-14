@@ -1,5 +1,7 @@
 # RIDGID.Common.Api
+RIDGID.Common.Api is a REST Api response formatting system that adds an error ID to the response message when an error has occurred. It does model validation and testing utilities are included.
 
+## To Use In Your API
 1. Make controller inherit from RidgidApiController
 2. Create ErrorId Object (optional if you want to hardcode instead)
 3. Create ErrorMessages Content (optional if you want to hardcode instead)
@@ -27,3 +29,8 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
     ```
   
   Etc.
+  
+ ## To Build Nuget Package
+ ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
+ 
+ 
