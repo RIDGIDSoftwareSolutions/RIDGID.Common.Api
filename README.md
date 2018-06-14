@@ -68,6 +68,6 @@ Add to your API's app.config appSettings:
 </appSettings>
 ```
 
- ## To Build Nuget Package
+ ### To Build Nuget Package
  ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
  
