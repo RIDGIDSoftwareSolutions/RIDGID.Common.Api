@@ -39,7 +39,6 @@
     <Reference Include="Shouldly, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6042cbcb05cbc941, processorArchitecture=MSIL">
       <HintPath>..\packages\Shouldly.3.0.0\lib\net451\Shouldly.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -55,11 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RIDGID.Common.Api.Core\Core.csproj">
-      <Project>{9c15507b-7574-488c-a72d-72f0b7623faf}</Project>
+      <Project>{9C15507B-7574-488C-A72D-72F0B7623FAF}</Project>
       <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\RIDGID.Common.Api.TestingUtilities\TestingUtilities.csproj">
-      <Project>{161b6626-efd1-4bfa-ba34-2e75215013a2}</Project>
+      <Project>{161B6626-EFD1-4BFA-BA34-2E75215013A2}</Project>
       <Name>TestingUtilities</Name>
     </ProjectReference>
   </ItemGroup>

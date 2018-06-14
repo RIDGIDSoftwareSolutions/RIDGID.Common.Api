@@ -68,15 +68,14 @@
     <Compile Include="ShouldValidateTheseFieldsExtension.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RIDGID.Common.Api.Core\Core.csproj">
       <Project>{9C15507B-7574-488C-A72D-72F0B7623FAF}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

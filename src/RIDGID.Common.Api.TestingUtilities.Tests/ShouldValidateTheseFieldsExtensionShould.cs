@@ -13,7 +13,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
     public class ShouldValidateTheseFieldsExtensionShould
     {
         [Test]
-        public void ThrowFieldNotFoundExceptionIfFieldNameNotFoundOnModel()
+        public void ThrowFieldNotFoundExceptionIfFieldNameNosoundOnModel()
         {
             //--Arrange
             var model = new object();
