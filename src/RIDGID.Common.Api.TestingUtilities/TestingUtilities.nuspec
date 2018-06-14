@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Ridgid.Common.Api</id>
+    <version>$version$</version>
+    <authors>Nicholas Gallimore</authors>
+    <owners>Ridge Tool Company</owners>
+    <licenseUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api</projectUrl>
+    <iconUrl>http://i63.tinypic.com/ka5l44.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>REST Api response formatting that adds an error ID to the response message when an error has occurred, includes model validation and testing utilities.</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright © Ridge Tool Company 2018</copyright>
+    <tags>Rest API Error RestApi Ridgid Validation ErrorId</tags>
+  </metadata>
+</package>
