@@ -1,6 +1,23 @@
 # RIDGID.Common.Api
 RIDGID.Common.Api is a REST Api response formatting system that adds an error ID to the response message when an error has occurred. It does model validation, and testing utilities are included.
 
+Responses have the following structure in the body:
+
+```json
+{
+  "Errors": [    
+    {
+      "DebugErrorMessage": "Username must be between 6 and 255 characters long.",
+      "ErrorId": 1
+    },
+    {
+      "DebugErrorMessage": "Username cannot contain special characters.",
+      "ErrorId": 2
+    }
+  ]
+}
+```
+
 ## To Use In Your API
 1. Make controller inherit from RidgidApiController
 2. Add the `[RidgidModelValidation]` attribute to the controller method
@@ -32,3 +49,29 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
  ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
  
  
+## Snake case property names
+In order to format the response body to use snakecase property names like the following:
+
+```json
+{
+  "errors": [    
+    {
+      "debug_error_message": "Username must be between 6 and 255 characters long.",
+      "error_id": 1
+    },
+    {
+      "debug_error_message": "Username cannot contain special characters.",
+      "error_id": 2
+    }
+  ]
+}
+```
+
+
+Add to your API's app.config appSettings:
+
+```xml
+<appSettings>
+    <add key="snakecase" value="true" />
+</appSettings>
+```
