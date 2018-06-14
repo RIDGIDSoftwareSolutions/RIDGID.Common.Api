@@ -45,9 +45,6 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
     ```  
     Etc.
   
- ## To Build Nuget Package
- ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
- 
  
 ## Snake case property names
 In order to format the response body to use snakecase property names like the following:
@@ -75,3 +72,7 @@ Add to your API's app.config appSettings:
     <add key="snakecase" value="true" />
 </appSettings>
 ```
+
+ ## To Build Nuget Package
+ ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
+ 
