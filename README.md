@@ -26,6 +26,7 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
     return Conflict(1, "message");
     return BadRequest(1, "message");
     return NotFound(1, "message");
+    return GenericHttpErrorResponse(1, "message", HttpStatusCodes.PaymentRequired);
     ```
   
   Etc.
