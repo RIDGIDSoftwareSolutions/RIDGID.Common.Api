@@ -25,9 +25,8 @@ using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldVali
     return BadRequest(1, "message");
     return NotFound(1, "message");
     return GenericHttpErrorResponse(1, "message", HttpStatusCodes.PaymentRequired);
-    ```
-  
-  Etc.
+    ```  
+    Etc.
   
  ## To Build Nuget Package
  ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
