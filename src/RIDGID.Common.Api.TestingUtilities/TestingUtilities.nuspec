@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>Ridgid.Common.Api</id>
+    <id>RIDGID.Common.Api</id>
     <version>$version$</version>
     <authors>Nicholas Gallimore</authors>
     <owners>Ridge Tool Company</owners>
