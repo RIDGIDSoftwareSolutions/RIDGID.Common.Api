@@ -20,8 +20,10 @@
 using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldValidation, RidgidStringLengthFieldValidation
 
 7. For non model validation error responses use:
-	```return Conflict(1, "message");```
-  ```return BadRequest(1, "message");```
-  ```return NotFound(1, "message");```  
+    ```
+    return Conflict(1, "message");
+    return BadRequest(1, "message");
+    return NotFound(1, "message");
+    ```
   
   Etc.
