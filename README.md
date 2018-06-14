@@ -1,5 +1,5 @@
 # RIDGID.Common.Api
-RIDGID.Common.Api is a REST Api response formatting system that adds an error ID to the response message when an error has occurred. It does model validation and testing utilities are included.
+RIDGID.Common.Api is a REST Api response formatting system that adds an error ID to the response message when an error has occurred. It does model validation, and testing utilities are included.
 
 ## To Use In Your API
 1. Make controller inherit from RidgidApiController
