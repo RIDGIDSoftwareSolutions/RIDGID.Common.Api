@@ -20,11 +20,11 @@ namespace RIDGID.Common.Api.TestingUtilities
             return contentAsString;
         }
 
-        public static ErrorsResponse ErrorsResponse(string content, int errorCount)
+        public static ErrorsResponse ErrorsResponse(string content, int expectedErrorCount)
         {
             var errorResponse = FormatResponseMessage.DeserializeMessage<ErrorsResponse>(content);
             errorResponse.ShouldNotBeNull();
-            errorResponse.Errors.Count.ShouldBe(errorCount);
+            errorResponse.Errors.Count.ShouldBe(expectedErrorCount);
             return errorResponse;
         }
     }

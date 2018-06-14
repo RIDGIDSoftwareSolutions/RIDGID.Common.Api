@@ -8,7 +8,8 @@ namespace RIDGID.Common.Api.Core
 {
     public class RidgidApiController : ApiController
     {
-        public IHttpActionResult ErrorResponse(int errorId, string debugErrorMessage, HttpStatusCode httpStatusCode)
+        public IHttpActionResult HttpGenericErrorResponse(int errorId, string debugErrorMessage,
+            HttpStatusCode httpStatusCode)
         {
             var errors = new List<ErrorMessage>
             {
@@ -25,11 +26,6 @@ namespace RIDGID.Common.Api.Core
             return new HttpGenericResult(this, httpStatusCode, errorsResponse);
         }
 
-        public virtual IHttpActionResult Created()
-        {
-            return new HttpGenericResult(this, HttpStatusCode.Created, null);
-        }
-
         public virtual IHttpActionResult NoContent()
         {
             return new HttpGenericResult(this, HttpStatusCode.NoContent, null);
@@ -37,32 +33,32 @@ namespace RIDGID.Common.Api.Core
 
         public virtual IHttpActionResult BadRequest(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.BadRequest);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.BadRequest);
         }
 
         public virtual IHttpActionResult Conflict(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Conflict);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Conflict);
         }
 
         public virtual IHttpActionResult NotFound(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.NotFound);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.NotFound);
         }
 
         public virtual IHttpActionResult Forbidden(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Forbidden);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Forbidden);
         }
 
         public virtual IHttpActionResult Unauthorized(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Unauthorized);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.Unauthorized);
         }
 
         public virtual IHttpActionResult InternalServerError(int errorId, string debugErrorMessage)
         {
-            return this.ErrorResponse(errorId, debugErrorMessage, HttpStatusCode.InternalServerError);
+            return HttpGenericErrorResponse(errorId, debugErrorMessage, HttpStatusCode.InternalServerError);
         }
     }
 }
