@@ -28,11 +28,6 @@ namespace RIDGID.Common.Api.Core.Utilities
             return response;
         }
 
-        public static T DeserializeMessage<T>(string content, bool defaultSnakeCaseSetting = false)
-        {
-            return JsonConvert.DeserializeObject<T>(content, JsonSerializerSetting());
-        }
-
         public static bool IsSnakeCase()
         {
             if (!bool.TryParse(ConfigurationManager.AppSettings["snakecase"], out var setting))

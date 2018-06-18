@@ -1,6 +1,11 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
+using RIDGID.Common.Api.Core;
+using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Net;
 
 namespace RIDGID.Common.Api.TestingUtilities.Tests
 {
@@ -8,41 +13,386 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
     public class TestTests
     {
         [Test]
-        public void TestErrorResponseDeserializesTwoCamelCaseJsonErrorsCorrectly()
+        public void TestResponseAssertsTrueForValidErrorMessage()
         {
             //--Arrange
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "false";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
-            const string json =
-                "{\"Errors\":[{\"ErrorId\":1,\"DebugErrorMessage\":\"ErrorMessage1\"},{\"ErrorId\":2,\"DebugErrorMessage\":\"ErrorMessage2\"}]}";
+            var actionResult =
+                new RidgidApiController().HttpGenericErrorResponse(1, "ErrorMessage", HttpStatusCode.BadRequest);
 
+
+            var expectedResult = new ErrorsResponse
+            {
+                Errors = new List<ErrorMessage>
+                {
+                    new ErrorMessage
+                    {
+                        ErrorId = 1,
+                        DebugErrorMessage = "ErrorMessage"
+                    }
+                }
+            };
             //--Act/Assert
-            var errorsResponse = Test.ErrorsResponse(json, 2);
-            errorsResponse.Errors[0].ErrorId.ShouldBe(1);
-            errorsResponse.Errors[0].DebugErrorMessage.ShouldBe("ErrorMessage1");
-            errorsResponse.Errors[1].ErrorId.ShouldBe(2);
-            errorsResponse.Errors[1].DebugErrorMessage.ShouldBe("ErrorMessage2");
+            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
         [Test]
-        public void TestErrorResponseDeserializesTwoSnakeCaseJsonErrorsCorrectly()
+        public void TestResponseAssertsFalseForInvalidErrorMessage()
         {
             //--Arrange
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "true";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
-            const string json =
-                "{\"errors\":[{\"error_id\":1,\"debug_error_message\":\"ErrorMessage1\"},{\"error_id\":2,\"debug_error_message\":\"ErrorMessage2\"}]}";
+            var actionResult =
+                new RidgidApiController().HttpGenericErrorResponse(1, "ErrorMessage", HttpStatusCode.BadRequest);
+
+
+            var expectedResult = new ErrorsResponse
+            {
+                Errors = new List<ErrorMessage>
+                {
+                    new ErrorMessage
+                    {
+                        ErrorId = 1,
+                        DebugErrorMessage = "ErrorMessage1"
+                    }
+                }
+            };
 
             //--Act/Assert
-            var errorsResponse = Test.ErrorsResponse(json, 2);
-            errorsResponse.Errors[0].ErrorId.ShouldBe(1);
-            errorsResponse.Errors[0].DebugErrorMessage.ShouldBe("ErrorMessage1");
-            errorsResponse.Errors[1].ErrorId.ShouldBe(2);
-            errorsResponse.Errors[1].DebugErrorMessage.ShouldBe("ErrorMessage2");
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
         }
+
+        [Test]
+        public void TestResponseAssertsFalseForInvalidErrorId()
+        {
+            //--Arrange
+            var actionResult =
+                new RidgidApiController().HttpGenericErrorResponse(1, "ErrorMessage", HttpStatusCode.BadRequest);
+
+
+            var expectedResult = new ErrorsResponse
+            {
+                Errors = new List<ErrorMessage>
+                {
+                    new ErrorMessage
+                    {
+                        ErrorId = 2,
+                        DebugErrorMessage = "ErrorMessage"
+                    }
+                }
+            };
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+
+        [Test]
+        public void TestResponseAssertsTrueForMatchingObjects()
+        {
+            //--Arrange
+            var expectedResult = new TestObject
+            {
+                TestField = "hola"
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
+
+            //--Act/Assert
+            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+        }
+
+        [Test]
+        public void TestResponseAssertsFalseForNotMatchingObjects()
+        {
+            //--Arrange
+            var expectedResult = new TestObject
+            {
+                TestField = "hola"
+            };
+
+            var returnedResult = new TestObject()
+            {
+                TestField = "hey"
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void TestResponseAssertsFalseForNotMatchingObjectsOfDifferentTypes()
+        {
+            //--Arrange
+            var expectedResult = new TestObject
+            {
+                TestField = "hola"
+            };
+
+            var returnedResult = "hey";
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<JsonSerializationException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void TestResponseAssertsTrueForMatchingObjectsWithBaseClassThatAlsoHasBaseClassThatDoesNotHaveAFieldSet()
+        {
+            //--Arrange
+            var expectedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola3"
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
+
+            //--Act/Assert
+            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+        }
+
+        [Test]
+        public void TestResponseAssertsFalseForNotMatchingObjectsWithBaseClass()
+        {
+            //--Arrange
+            var expectedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola3"
+            };
+
+            var returnedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola4"
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void TestResponseAssertsFalseForMatchingObjectsWithBaseClassThatHasBaseClassToo()
+        {
+            //--Arrange
+            var expectedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola3",
+                Id = "hola5"
+            };
+
+            var returnedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola3",
+                Id = "hola4"
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+
+        [Test]
+        public void StillWorksWhenFieldIsEmpty()
+        {
+            //--Arrange
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, null);
+
+            //--Act/Assert
+            actionResult.ShouldBeNull(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void ReturnAssertExceptionForNotMatchingResponseThatContainsList()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsList
+            {
+                ItemList = new List<TestObject>
+                {
+                    new TestObject
+                    {
+                        TestField = "Hello"
+                    }
+                }
+            };
+
+            var returnedResult = new TestObjectThatContainsList
+            {
+                ItemList = new List<TestObject>
+                {
+                    new TestObject
+                    {
+                        TestField = "Hallo"
+                    }
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void NotThrowExceptionForMatchingResponseThatContainsList()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsList
+            {
+                ItemList = new List<TestObject>
+                {
+                    new TestObject
+                    {
+                        TestField = "Hello"
+                    }
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
+
+            //--Act/Assert
+            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+        }
+
+
+        [Test]
+        public void ReturnAssertExceptionForNotMatchingResponseThatContainsListInsideList()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsListInsideList
+            {
+                ParentList = new List<TestObjectThatContainsList>
+                {
+                    new TestObjectThatContainsList
+                    {
+                        ItemList = new List<TestObject>
+                        {
+                            new TestObject
+                            {
+                                TestField = "Hello"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var returnedResult = new TestObjectThatContainsListInsideList
+            {
+                ParentList = new List<TestObjectThatContainsList>
+                {
+                    new TestObjectThatContainsList
+                    {
+                        ItemList = new List<TestObject>
+                        {
+                            new TestObject
+                            {
+                                TestField = "Hallo"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void NotReturnAssertExceptionForMatchingResponseThatContainsListInsideList()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsListInsideList
+            {
+                ParentList = new List<TestObjectThatContainsList>
+                {
+                    new TestObjectThatContainsList
+                    {
+                        ItemList = new List<TestObject>
+                        {
+                            new TestObject
+                            {
+                                TestField = "Hello"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var returnedResult = new TestObjectThatContainsListInsideList
+            {
+                ParentList = new List<TestObjectThatContainsList>
+                {
+                    new TestObjectThatContainsList
+                    {
+                        ItemList = new List<TestObject>
+                        {
+                            new TestObject
+                            {
+                                TestField = "Hello"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+    }
+
+    public class TestObjectThatContainsListInsideList
+    {
+        public List<TestObjectThatContainsList> ParentList { get; set; }
+    }
+
+    public class TestObjectThatContainsList
+    {
+        public List<TestObject> ItemList { get; set; }
+    }
+
+    public class TestObject
+    {
+        public string TestField { get; set; }
+    }
+
+    public class TestBaseMessageBaseMessage
+    {
+        public string Id { get; set; }
+    }
+
+    public class TestMessage : TestBaseMessage
+    {
+        public string Email { get; set; }
+
+        public string Username { get; set; }
+    }
+
+    public class TestBaseMessage : TestBaseMessageBaseMessage
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
     }
 }
