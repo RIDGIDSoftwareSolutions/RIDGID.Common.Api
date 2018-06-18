@@ -6,7 +6,7 @@ using System.Configuration;
 namespace RIDGID.Common.Api.Core.Tests.UtilitiesTests
 {
     [TestFixture]
-    public class FormatResponseMessageTests
+    public class FormatResponseMessageShould
     {
         [Test]
         public void IsSnakeCaseReturnsFalseWithNoAppConfigSnakeCaseSetting()

@@ -63,7 +63,7 @@
     <Compile Include="AttributesTests\RidgidRequiredAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidStringLengthAttributeShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UtilitiesTests\FormatResponseMessageTests.cs" />
+    <Compile Include="UtilitiesTests\FormatResponseMessageShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
