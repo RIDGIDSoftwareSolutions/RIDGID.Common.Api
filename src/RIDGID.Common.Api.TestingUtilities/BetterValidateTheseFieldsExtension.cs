@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace RIDGID.Common.Api.TestingUtilities
 {
-    public static class ShouldValidateTheseFieldsExtension
+    public static class BetterValidateTheseFieldsExtension
     {
         public static void ShouldValidateTheseFields<TModelType>(this TModelType model, List<RidgidFieldValidation> fieldValidations)
         {

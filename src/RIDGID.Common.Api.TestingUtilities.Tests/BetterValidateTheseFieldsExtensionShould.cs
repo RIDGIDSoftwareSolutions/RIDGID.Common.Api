@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace RIDGID.Common.Api.TestingUtilities.Tests
 {
     [TestFixture]
-    public class ShouldValidateTheseFieldsExtensionShould
+    public class BetterValidateTheseFieldsExtensionShould
     {
         [Test]
         public void ThrowFieldNotFoundExceptionIfFieldNameNosoundOnModel()

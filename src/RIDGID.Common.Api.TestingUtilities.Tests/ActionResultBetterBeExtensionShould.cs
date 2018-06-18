@@ -10,7 +10,7 @@ using System.Net;
 namespace RIDGID.Common.Api.TestingUtilities.Tests
 {
     [TestFixture]
-    public class TestTests
+    public class ActionResultBetterBeExtensionShould
     {
         [Test]
         public void TestResponseAssertsTrueForValidErrorMessage()
@@ -32,7 +32,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 }
             };
             //--Act/Assert
-            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             };
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             };
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
 
@@ -96,7 +96,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
 
             //--Act/Assert
-            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<JsonSerializationException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<JsonSerializationException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
 
             //--Act/Assert
-            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
 
@@ -216,8 +216,20 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, null);
 
             //--Act/Assert
-            actionResult.ShouldBeNull(HttpStatusCode.BadRequest);
+            actionResult.BetterBeNull(HttpStatusCode.BadRequest);
         }
+
+
+        [Test]
+        public void StillThrowsExceptionWhenFieldIsEmpty()
+        {
+            //--Arrange
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.Conflict, null);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBeNull(HttpStatusCode.BadRequest));
+        }
+
 
         [Test]
         public void ReturnAssertExceptionForNotMatchingResponseThatContainsList()
@@ -248,7 +260,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -269,7 +281,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
 
             //--Act/Assert
-            actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult);
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
 
@@ -314,7 +326,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
         [Test]
@@ -337,29 +349,13 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 }
             };
-
-            var returnedResult = new TestObjectThatContainsListInsideList
-            {
-                ParentList = new List<TestObjectThatContainsList>
-                {
-                    new TestObjectThatContainsList
-                    {
-                        ItemList = new List<TestObject>
-                        {
-                            new TestObject
-                            {
-                                TestField = "Hello"
-                            }
-                        }
-                    }
-                }
-            };
-
-            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+            var actionResult =
+                new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.ShouldBe(HttpStatusCode.BadRequest, expectedResult));
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
+
     }
 
     public class TestObjectThatContainsListInsideList

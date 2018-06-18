@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RIDGID.Common.Api.Core.Objects;
 using Shouldly;
 using System;
 using System.Collections;
@@ -11,18 +12,23 @@ using System.Web.Http;
 
 namespace RIDGID.Common.Api.TestingUtilities
 {
-    public static class Test
+    public static class ActionResultBetterBeExtension
     {
-        public static void ShouldBeNull(this IHttpActionResult actionResult, HttpStatusCode expectedStatusCode,
+        public static void BetterBeNull(this IHttpActionResult actionResult, HttpStatusCode expectedStatusCode,
             string expectedLocationHeader = null)
         {
             Content(actionResult, expectedStatusCode, true);
             CheckLocationHeader(actionResult, expectedLocationHeader);
         }
 
+        public static void BetterBe(this IHttpActionResult actionResult, HttpStatusCode expectedStatusCode,
+            string expectedDebugErrorMessage, int expectedErrorId)
+        {
+            BetterBe(actionResult, expectedStatusCode, new ErrorsResponse(expectedDebugErrorMessage, expectedErrorId));
+        }
         // Checks that an actionresult is equal to the expected result, and that the status code and optional location
         // header are what is expected
-        public static void ShouldBe<TModelType>(this IHttpActionResult actionResult,
+        public static void BetterBe<TModelType>(this IHttpActionResult actionResult,
             HttpStatusCode expectedStatusCode, TModelType expectedResult, string expectedLocationHeader = null)
         {
             var contentAsString = Content(actionResult, expectedStatusCode, false);
@@ -133,7 +139,6 @@ namespace RIDGID.Common.Api.TestingUtilities
             {
                 fieldValues.Add(field.GetValue(model));
             }
-
             return fieldValues;
         }
     }

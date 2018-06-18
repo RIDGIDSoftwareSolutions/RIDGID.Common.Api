@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
+    <Compile Include="ActionResultBetterBeExtension.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\RidgidEmailAddressAttributeNotFoundException.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Exceptions\RidgidStringLengthAttributeNotFoundException.cs" />
     <Compile Include="FieldValidations\RidgidStringLengthFieldValidation.cs" />
     <Compile Include="FieldValidations\RidgidValidationType.cs" />
-    <Compile Include="ShouldValidateTheseFieldsExtension.cs" />
+    <Compile Include="BetterValidateTheseFieldsExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
