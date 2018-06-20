@@ -126,17 +126,22 @@ namespace RIDGID.Common.Api.TestingUtilities
 
         private static IEnumerable<object> GetFieldValuesForModel<TModelType>(TModelType model)
         {
-            var declaredFields = model.GetType().GetTypeInfo().DeclaredFields.ToList();
-            var baseTypeInfo = model.GetType().GetTypeInfo().BaseType.GetTypeInfo();
+            var modelTypeInfo = model.GetType().GetTypeInfo();
+            var properties = modelTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
 
-            while (baseTypeInfo.DeclaredFields.ToList().Count > 0)
+            var baseTypeInfo = modelTypeInfo.BaseType.GetTypeInfo();
+
+            var baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+
+            while (baseProperties.Count > 0)
             {
-                declaredFields.AddRange(baseTypeInfo.DeclaredFields.ToList());
-                baseTypeInfo = baseTypeInfo.GetTypeInfo().BaseType.GetTypeInfo();
+                properties.AddRange(baseProperties);
+                baseTypeInfo = baseTypeInfo.BaseType.GetTypeInfo();
+                baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
             };
 
             var fieldValues = new List<object>();
-            foreach (var field in declaredFields)
+            foreach (var field in properties)
             {
                 fieldValues.Add(field.GetValue(model));
             }
