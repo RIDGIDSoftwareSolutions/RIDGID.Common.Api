@@ -4,7 +4,6 @@ using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
 
 namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 {
@@ -40,7 +39,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new RangeAttribute(typeof(int), "1", "4").FormatErrorMessage(nameof(model.Field));
+            var defaultErrorMsg = "The value of the 'Field' field must be between '1' and '4'.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }

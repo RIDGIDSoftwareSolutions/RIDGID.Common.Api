@@ -36,7 +36,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new RequiredAttribute().FormatErrorMessage(nameof(model.Field));
+            var defaultErrorMsg = "The 'Field' field is required.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }

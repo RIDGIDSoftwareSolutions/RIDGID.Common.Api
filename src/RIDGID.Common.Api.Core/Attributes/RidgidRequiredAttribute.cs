@@ -19,10 +19,16 @@ namespace RIDGID.Common.Api.Core.Attributes
         {
             return new RequiredAttribute().IsValid(value);
         }
+
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? new RequiredAttribute().FormatErrorMessage(fieldName);
+            var errorMessage = CustomErrorMessage ?? CreateErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
+        }
+
+        private static string CreateErrorMessage(string fieldName)
+        {
+            return $"The '{fieldName}' field is required.";
         }
     }
 }

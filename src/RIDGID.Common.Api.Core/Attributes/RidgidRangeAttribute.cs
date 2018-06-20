@@ -34,8 +34,13 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? new RangeAttribute(Type, Mininum, Maximum).FormatErrorMessage(fieldName);
+            var errorMessage = CustomErrorMessage ?? CreateErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
+        }
+
+        private string CreateErrorMessage(string fieldName)
+        {
+            return $"The value of the '{fieldName}' field must be between '{Mininum}' and '{Maximum}'.";
         }
     }
 }

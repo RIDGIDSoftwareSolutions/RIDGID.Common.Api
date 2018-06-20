@@ -39,7 +39,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new MaxLengthAttribute(2).FormatErrorMessage(nameof(model.Field));
+            var defaultErrorMsg = "The 'Field' field cannot be greater than '2' characters long.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }

@@ -39,7 +39,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new RegularExpressionAttribute("a|b").FormatErrorMessage(nameof(model.Field));
+            var defaultErrorMsg = "The 'Field' field must match the regular expression: 'a|b'.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }

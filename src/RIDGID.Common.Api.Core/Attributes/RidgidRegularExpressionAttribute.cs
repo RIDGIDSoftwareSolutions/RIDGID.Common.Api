@@ -27,8 +27,13 @@ namespace RIDGID.Common.Api.Core.Attributes
         public override string FormatErrorMessage(string fieldName)
         {
             var errorMessage =
-                CustomErrorMessage ?? new RegularExpressionAttribute(Regex).FormatErrorMessage(fieldName);
+                CustomErrorMessage ?? CreateErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
+        }
+
+        private string CreateErrorMessage(string fieldName)
+        {
+            return $"The '{fieldName}' field must match the regular expression: '{Regex}'.";
         }
     }
 }

@@ -5,11 +5,6 @@ namespace RIDGID.Common.Api.Core.Attributes
 {
     public class RidgidStringLengthAttribute : RidgidValidationAttribute
     {
-        private string GenerateMessage(string fieldname)
-        {
-            return $"The '{fieldname}' string must be between {MininumLength} and {MaximumLength} characters long.";
-        }
-
         public int MininumLength { get; set; }
 
         public int MaximumLength { get; set; }
@@ -35,8 +30,13 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         public override string FormatErrorMessage(string fieldName)
         {
-            var errorMessage = CustomErrorMessage ?? GenerateMessage(fieldName);
+            var errorMessage = CustomErrorMessage ?? CreateErrorMessage(fieldName);
             return ModelStateCustomErrorMessage.Create(ErrorId, errorMessage);
+        }
+
+        private string CreateErrorMessage(string fieldName)
+        {
+            return $"The '{fieldName}' field must be between '{MininumLength}' and '{MaximumLength}' characters long.";
         }
     }
 }

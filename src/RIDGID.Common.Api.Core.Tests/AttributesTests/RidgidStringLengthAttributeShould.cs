@@ -66,8 +66,8 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new RidgidStringLengthAttribute(1, 2, 3).FormatErrorMessage(nameof(model.Field));
-            result[0].ErrorMessage.ShouldBe(defaultErrorMsg);
+            const string defaultErrorMsg = "The 'Field' field must be between '2' and '3' characters long.";
+            result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
 
         [Test]
