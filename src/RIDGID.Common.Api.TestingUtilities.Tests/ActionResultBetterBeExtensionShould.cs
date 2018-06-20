@@ -4,8 +4,13 @@ using RIDGID.Common.Api.Core;
 using RIDGID.Common.Api.Core.Objects;
 using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace RIDGID.Common.Api.TestingUtilities.Tests
 {
@@ -356,8 +361,42 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
         }
 
+        [Test]
+        public void AssertFalseForInvalidLocationHeader()
+        {
+            //--Arrange
+            IHttpActionResult actionResult = new TestActionResult();
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBeNull(HttpStatusCode.Created, "https://notlink"));
+        }
+        [Test]
+        public void AssertTrueForValidLocationHeader()
+        {
+            //--Arrange
+            IHttpActionResult actionResult = new TestActionResult();
+
+            //--Act/Assert
+            actionResult.BetterBeNull(HttpStatusCode.Created, "https://link");
+        }
+
     }
 
+    public class TestActionResult : IHttpActionResult
+    {
+        internal HttpResponseMessage Execute()
+        {
+            var response = FormatResponseMessage.CreateMessage(null, HttpStatusCode.Created);
+            response.RequestMessage = new HttpRequestMessage();
+            response.Headers.Location = new Uri("https://link");
+            return response;
+        }
+
+        public Task<System.Net.Http.HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(Execute());
+        }
+    }
     public class TestObjectThatContainsListInsideList
     {
         public List<TestObjectThatContainsList> ParentList { get; set; }

@@ -42,6 +42,7 @@ namespace RIDGID.Common.Api.TestingUtilities
                 throw new JsonSerializationException($"{contentAsString} could not be deserialized into the expected object.");
             }
             returnedModel.ShouldNotBeNull();
+
             var expectedFieldValues = GetFieldValuesForModel(expectedResult).ToList();
             var returnedFieldValues = GetFieldValuesForModel(returnedModel).ToList();
 
@@ -64,7 +65,7 @@ namespace RIDGID.Common.Api.TestingUtilities
         {
             if (expectedLocationHeader != null)
             {
-                actionResult.ExecuteAsync(new CancellationToken()).Result.Content.Headers.ContentLocation
+                actionResult.ExecuteAsync(new CancellationToken()).Result.Headers.Location
                     .ShouldBe(new Uri(expectedLocationHeader));
             }
         }

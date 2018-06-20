@@ -58,9 +58,28 @@ namespace RIDGID.Common.Api.TestingUtilities
                         ValidateStringLengthAttribute(fieldValidation, property);
                         break;
                     }
+                case RidgidValidationType.RangeAttribute:
+                    {
+                        ValidateRangeAttribute(fieldValidation, property);
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private static void ValidateRangeAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        {
+            var attribute = (RidgidRangeAttribute)property.GetCustomAttribute(
+                                typeof(RidgidRangeAttribute), false) ??
+                            throw new RidgidRangeAttributeNotFoundException(property.Name);
+            attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
+            attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
+            attribute.Mininum.ShouldBe(((RidgidRangeFieldValidation)fieldValidation)
+                .Mininum);
+            attribute.Maximum.ShouldBe(((RidgidRangeFieldValidation)fieldValidation)
+                .Maximum);
+            attribute.Type.ShouldBe(((RidgidRangeFieldValidation)fieldValidation).Type);
         }
 
         private static void ValidateAttributeTypes<TModelType>()

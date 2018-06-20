@@ -49,6 +49,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             result[0].ErrorMessage.ShouldBe(defaultErrorMsg);
         }
 
+        [Test]
         public void InvalidateCorrectlyWhenMoreThanMaxLength()
         {
             //--Arrange

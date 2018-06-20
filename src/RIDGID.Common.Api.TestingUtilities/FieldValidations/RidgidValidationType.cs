@@ -7,6 +7,7 @@
         MinLengthAttribute = 3,
         RegularExpressionAttribute = 4,
         RequiredAttribute = 5,
-        StringLengthAttribute = 6
+        StringLengthAttribute = 6,
+        RangeAttribute = 7
     }
 }

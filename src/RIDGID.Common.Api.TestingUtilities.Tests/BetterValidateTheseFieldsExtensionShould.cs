@@ -578,6 +578,147 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
         }
 
         [Test]
+        public void FailIfRidgidRangeAttributeIsMissingFromFieldName()
+        {
+            //--Arrange
+            var model = new { Field = 1 };
+
+            //--Act
+            Should.Throw<RidgidRangeAttributeNotFoundException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        FieldName = nameof(model.Field)
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidRangeAttributeHasWrongErrorId()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 2,
+                        FieldName = nameof(model.Range),
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidRangeAttributeHasWrongType()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 2,
+                        FieldName = nameof(model.Range),
+                        Type = typeof(decimal)
+                    }
+                }));
+        }
+
+
+        [Test]
+        public void FailIfRidgidRangeAttributeHasWrongErrorMessage()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 1,
+                        Type = typeof(int),
+                        ErrorMessage = "ExpectedErrorMessage",
+                        FieldName = nameof(model.Range),
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidRangeAttributeHasWrongMininum()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ExpectedErrorMessage",
+                        FieldName = nameof(model.Range),
+                        Type = typeof(int),
+                        Mininum = "0"
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidRangeAttributeHasWrongMaxLength()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ExpectedErrorMessage",
+                        FieldName = nameof(model.Range),
+                        Type = typeof(int),
+                        Mininum = "0",
+                        Maximum = "0"
+                    }
+                }));
+        }
+
+        [Test]
+        public void PassIfRidgidRangeAttributeMatches()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidRangeFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ActualErrorMessage",
+                        FieldName = nameof(model.Range),
+                        Type = typeof(int),
+                        Mininum = "1",
+                        Maximum = "2"
+                    }
+                });
+        }
+
+
+        [Test]
         public void ThrowExceptionIfNonRidgidAttributeIsOnModel()
         {
             //--Arrange
@@ -615,5 +756,8 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
 
         [RidgidStringLength(1, 1, 2, "ActualErrorMessage")]
         public string StringLength { get; set; }
+
+        [RidgidRange(1, typeof(int), "1", "2", "ActualErrorMessage")]
+        public string Range { get; set; }
     }
 }
