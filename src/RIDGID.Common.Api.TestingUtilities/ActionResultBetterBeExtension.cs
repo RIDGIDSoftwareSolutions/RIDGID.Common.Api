@@ -110,6 +110,10 @@ namespace RIDGID.Common.Api.TestingUtilities
                     CheckValuesOfEnumerableField((IEnumerable<object>)field, i,
                         (IEnumerable<object>)returnedFieldAsList[i]);
                 }
+                else if (IsSimpleType(field.GetType()))
+                {
+                    returnedFieldAsList[i].ShouldBe(expectedFieldAsList[i]);
+                }
                 else
                 {
                     var expectedFieldSubFieldList = GetFieldValuesForModel(field).ToList();
@@ -127,17 +131,17 @@ namespace RIDGID.Common.Api.TestingUtilities
         private static IEnumerable<object> GetFieldValuesForModel<TModelType>(TModelType model)
         {
             var modelTypeInfo = model.GetType().GetTypeInfo();
-            var properties = modelTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+            var properties = modelTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
 
             var baseTypeInfo = modelTypeInfo.BaseType.GetTypeInfo();
 
-            var baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+            var baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
 
             while (baseProperties.Count > 0)
             {
                 properties.AddRange(baseProperties);
                 baseTypeInfo = baseTypeInfo.BaseType.GetTypeInfo();
-                baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+                baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
             };
 
             var fieldValues = new List<object>();
@@ -146,6 +150,25 @@ namespace RIDGID.Common.Api.TestingUtilities
                 fieldValues.Add(field.GetValue(model));
             }
             return fieldValues;
+        }
+
+        private static bool IsSimpleType(Type type)
+        {
+            return
+                type.IsPrimitive ||
+                new[]
+                {
+                    typeof(Enum),
+                    typeof(string),
+                    typeof(decimal),
+                    typeof(DateTime),
+                    typeof(DateTimeOffset),
+                    typeof(TimeSpan),
+                    typeof(Guid)
+                }.Contains(type) ||
+                Convert.GetTypeCode(type) != TypeCode.Object ||
+                (type.IsGenericParameter && type.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                 IsSimpleType(type.GetGenericArguments()[0]));
         }
     }
 }

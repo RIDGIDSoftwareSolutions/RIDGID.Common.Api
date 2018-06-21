@@ -46,7 +46,7 @@ namespace RIDGID.Common.Api.Core.Utilities
                 }
                 : new JsonSerializerSettings
                 {
-                    ContractResolver = new DefaultContractResolver(),
+                    ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(true, true) },
                 };
         }
     }

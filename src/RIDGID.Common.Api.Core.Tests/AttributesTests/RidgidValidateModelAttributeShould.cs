@@ -107,7 +107,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 
             //--Assert
             var contentAsString = ContentAsString(actionContext, response);
-            contentAsString.ShouldBe("{\"Errors\":[{\"ErrorId\":1,\"DebugErrorMessage\":\"ErrorMessage\"}]}");
+            contentAsString.ShouldBe("{\"errors\":[{\"errorId\":1,\"debugErrorMessage\":\"ErrorMessage\"}]}");
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             var contentAsString = ContentAsString(actionContext, response);
             contentAsString.ShouldBe(
-                "{\"Errors\":[{\"ErrorId\":1,\"DebugErrorMessage\":\"ErrorMessage1\"},{\"ErrorId\":2,\"DebugErrorMessage\":\"ErrorMessage2\"}]}");
+                "{\"errors\":[{\"errorId\":1,\"debugErrorMessage\":\"ErrorMessage1\"},{\"errorId\":2,\"debugErrorMessage\":\"ErrorMessage2\"}]}");
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 
             //--Assert
             var contentAsString = ContentAsString(actionContext, response);
-            contentAsString.ShouldBe("{\"Errors\":[{\"ErrorId\":1,\"DebugErrorMessage\":\"ErrorMessage\"}]}");
+            contentAsString.ShouldBe("{\"errors\":[{\"errorId\":1,\"debugErrorMessage\":\"ErrorMessage\"}]}");
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             var contentAsString = ContentAsString(actionContext, response);
             contentAsString.ShouldBe(
-                "{\"Errors\":[{\"ErrorId\":1,\"DebugErrorMessage\":\"ErrorMessage1\"},{\"ErrorId\":2,\"DebugErrorMessage\":\"ErrorMessage2\"}]}");
+                "{\"errors\":[{\"errorId\":1,\"debugErrorMessage\":\"ErrorMessage1\"},{\"errorId\":2,\"debugErrorMessage\":\"ErrorMessage2\"}]}");
         }
 
         private static string ContentAsString(HttpActionContext actionContext, HttpResponseMessage response)
