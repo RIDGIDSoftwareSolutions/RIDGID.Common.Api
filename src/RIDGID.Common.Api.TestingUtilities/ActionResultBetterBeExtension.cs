@@ -43,19 +43,27 @@ namespace RIDGID.Common.Api.TestingUtilities
             }
             returnedModel.ShouldNotBeNull();
 
-            var expectedFieldValues = GetFieldValuesForModel(expectedResult).ToList();
-            var returnedFieldValues = GetFieldValuesForModel(returnedModel).ToList();
-
-            for (var fieldIndex = 0; fieldIndex < expectedFieldValues.Count; fieldIndex++)
+            // ExpectedResult is enumerable object
+            if (FieldIsEnumerable(expectedResult))
             {
-                var field = expectedFieldValues[fieldIndex];
-                if (FieldIsEnumerable(field))
+                CheckValuesOfEnumerableField((IEnumerable<object>)expectedResult, 0, (IEnumerable<object>)returnedModel, true);
+            }
+            else
+            {
+                var expectedFieldValues = GetFieldValuesForModel(expectedResult).ToList();
+                var returnedFieldValues = GetFieldValuesForModel(returnedModel).ToList();
+
+                for (var fieldIndex = 0; fieldIndex < expectedFieldValues.Count; fieldIndex++)
                 {
-                    CheckValuesOfEnumerableField(expectedFieldValues, fieldIndex, returnedFieldValues);
-                }
-                else
-                {
-                    field.ShouldBe(returnedFieldValues[fieldIndex]);
+                    var field = expectedFieldValues[fieldIndex];
+                    if (FieldIsEnumerable(field))
+                    {
+                        CheckValuesOfEnumerableField(expectedFieldValues, fieldIndex, returnedFieldValues, false);
+                    }
+                    else
+                    {
+                        field.ShouldBe(returnedFieldValues[fieldIndex]);
+                    }
                 }
             }
             CheckLocationHeader(actionResult, expectedLocationHeader);
@@ -98,17 +106,24 @@ namespace RIDGID.Common.Api.TestingUtilities
         }
 
         private static void CheckValuesOfEnumerableField(IEnumerable<object> expectedFieldValues, int fieldIndex,
-            IEnumerable<object> returnedFieldValues)
+            IEnumerable<object> returnedFieldValues, bool isRoot)
         {
-            var expectedFieldAsList = ((IEnumerable<object>)expectedFieldValues.ToList()[fieldIndex]).ToList();
-            var returnedFieldAsList = ((IEnumerable<object>)returnedFieldValues.ToList()[fieldIndex]).ToList();
+            var expectedFieldAsList = expectedFieldValues.ToList();
+            var returnedFieldAsList = returnedFieldValues.ToList();
+
+            if (!isRoot)
+            {
+                expectedFieldAsList = ((IEnumerable<object>)expectedFieldAsList.ToList()[fieldIndex]).ToList();
+                returnedFieldAsList = ((IEnumerable<object>)returnedFieldAsList.ToList()[fieldIndex]).ToList();
+            }
+
             for (var i = 0; i < expectedFieldAsList.Count; i++)
             {
                 var field = expectedFieldAsList[i];
                 if (FieldIsEnumerable(field))
                 {
                     CheckValuesOfEnumerableField((IEnumerable<object>)field, i,
-                        (IEnumerable<object>)returnedFieldAsList[i]);
+                        (IEnumerable<object>)returnedFieldAsList[i], false);
                 }
                 else if (IsSimpleType(field.GetType()))
                 {

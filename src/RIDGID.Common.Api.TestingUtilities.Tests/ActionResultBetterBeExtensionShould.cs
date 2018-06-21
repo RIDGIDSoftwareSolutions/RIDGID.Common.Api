@@ -362,6 +362,32 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
         }
 
         [Test]
+        public void ReturnAssertExceptionForMatchingResponseThatIsAListNotAnObject()
+        {
+            //--Arrange
+            var expectedResult = new List<TestObject>
+            {
+                new TestObject
+                {
+                    TestField = "Hello"
+                }
+            };
+            var actualResult = new List<TestObject>
+            {
+                new TestObject
+                {
+                    TestField = "HelloNo!"
+                }
+            };
+
+            var actionResult =
+                new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, actualResult));
+        }
+
+        [Test]
         public void AssertFalseForInvalidLocationHeader()
         {
             //--Arrange
@@ -370,6 +396,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             //--Act/Assert
             Should.Throw<ShouldAssertException>(() => actionResult.BetterBeNull(HttpStatusCode.Created, "https://notlink"));
         }
+
         [Test]
         public void AssertTrueForValidLocationHeader()
         {
