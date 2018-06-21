@@ -10,7 +10,7 @@
     <iconUrl>http://i63.tinypic.com/ka5l44.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>REST Api response formatting that adds an error ID to the response message when an error has occurred, includes model validation and testing utilities.</description>
-    <releaseNotes>Initial Release</releaseNotes>
+    <releaseNotes>Use snakeCase by default, added BetterBe testing for IHttpActionResults</releaseNotes>
     <copyright>Copyright © Ridge Tool Company 2018</copyright>
     <tags>Rest API Error RestApi Ridgid Validation ErrorId</tags>
   </metadata>
