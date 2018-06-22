@@ -43,10 +43,13 @@ namespace RIDGID.Common.Api.TestingUtilities
             }
             returnedModel.ShouldNotBeNull();
 
-            // ExpectedResult is enumerable object
             if (FieldIsEnumerable(expectedResult))
             {
                 CheckValuesOfEnumerableField((IEnumerable<object>)expectedResult, 0, (IEnumerable<object>)returnedModel, true);
+            }
+            else if (IsSimpleType(expectedResult.GetType()))
+            {
+                returnedModel.ShouldBe(expectedResult);
             }
             else
             {
