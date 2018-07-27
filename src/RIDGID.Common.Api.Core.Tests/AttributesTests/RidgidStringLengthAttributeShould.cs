@@ -10,13 +10,13 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
     internal class ModelWithStringLengthField
     {
         [RidgidStringLength(1, 2, 3)]
-        public string Field { get; set; }
+        public string MultipleWordedField { get; set; }
     }
 
     internal class ModelWithStringLengthMinAndMaxEqualField
     {
         [RidgidStringLength(1, 2, 2)]
-        public string Field { get; set; }
+        public string MultipleWordedField { get; set; }
     }
 
     internal class ModelWithStringLengthFieldWithCustomErrorMessage
@@ -34,10 +34,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithStringLengthField
             {
-                Field = "1"
+                MultipleWordedField = "1"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -45,8 +47,8 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = new RidgidStringLengthAttribute(1, 2, 3).FormatErrorMessage(nameof(model.Field));
-            result[0].ErrorMessage.ShouldBe(defaultErrorMsg);
+            const string defaultErrorMsg = "The 'MultipleWordedField' field must be between '2' and '3' characters long.";
+            result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
 
         [Test]
@@ -55,10 +57,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithStringLengthField
             {
-                Field = "1234"
+                MultipleWordedField = "1234"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -66,7 +70,30 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            const string defaultErrorMsg = "The 'Field' field must be between '2' and '3' characters long.";
+            const string defaultErrorMsg = "The 'MultipleWordedField' field must be between '2' and '3' characters long.";
+            result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
+        }
+
+        [Test]
+        public void UseSnakeCaseForFieldNameWhenSet()
+        {
+            //--Arrange
+            var model = new ModelWithStringLengthField
+            {
+                MultipleWordedField = "1"
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            const string defaultErrorMsg = "The 'multiple_worded_field' field must be between '2' and '3' characters long.";
             result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
 
@@ -80,6 +107,8 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -97,7 +126,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithStringLengthField
             {
-                Field = "12"
+                MultipleWordedField = "12"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -116,7 +145,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithStringLengthField
             {
-                Field = "123"
+                MultipleWordedField = "123"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -135,10 +164,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithStringLengthMinAndMaxEqualField
             {
-                Field = "12"
+                MultipleWordedField = "12"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -146,6 +177,53 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeTrue();
             result.Count.ShouldBe(0);
+        }
+
+        [Test]
+        public void InvalidateCorrectlyWhenMaxAndMinEqualWhenNotSnakeCase()
+        {
+            //--Arrange
+            var model = new ModelWithStringLengthMinAndMaxEqualField
+            {
+                MultipleWordedField = "1234"
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1,
+                "The 'multiple_worded_field' field must be '2' characters long."));
+        }
+
+
+        [Test]
+        public void InvalidateCorrectlyWhenMaxAndMinEqualWhenSnakeCase()
+        {
+            //--Arrange
+            var model = new ModelWithStringLengthMinAndMaxEqualField
+            {
+                MultipleWordedField = "1234"
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            result[0].ErrorMessage.ShouldBe(ModelStateCustomErrorMessage.Create(1,
+                "The 'multiple_worded_field' field must be '2' characters long."));
         }
     }
 }

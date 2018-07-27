@@ -10,7 +10,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
     internal class ModelWithRangeFieldWithoutCustomErrorMessage
     {
         [RidgidRange(1, typeof(int), "1", "4")]
-        public int? Field { get; set; }
+        public int? MultipleWordedField { get; set; }
     }
 
     internal class ModelWithRangeFieldWithCustomErrorMessage
@@ -28,10 +28,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithRangeFieldWithoutCustomErrorMessage
             {
-                Field = 0
+                MultipleWordedField = 0
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -39,7 +41,31 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = "The value of the 'Field' field must be between '1' and '4'.";
+            const string defaultErrorMsg = "The value of the 'MultipleWordedField' field must be between '1' and '4'.";
+            result[0].ErrorMessage
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
+        }
+
+        [Test]
+        public void UseSnakeCaseInDefaultErrorMessageWhenSet()
+        {
+            //--Arrange
+            var model = new ModelWithRangeFieldWithoutCustomErrorMessage
+            {
+                MultipleWordedField = 0
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            const string defaultErrorMsg = "The value of the 'multiple_worded_field' field must be between '1' and '4'.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -72,7 +98,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithRangeFieldWithoutCustomErrorMessage
             {
-                Field = 1
+                MultipleWordedField = 1
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();

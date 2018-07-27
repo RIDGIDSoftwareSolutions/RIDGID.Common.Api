@@ -9,8 +9,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
 {
     internal class ModelWithEmailAddressFieldWithoutCustomErrorMessage
     {
-        [RidgidEmailAddress(1)]
-        public string Field { get; set; }
+        [RidgidEmailAddress(1)] public string MultipleWordedField { get; set; }
     }
 
     internal class ModelWithEmailAddressFieldWithCustomErrorMessage
@@ -28,10 +27,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithEmailAddressFieldWithoutCustomErrorMessage
             {
-                Field = "invalidemail"
+                MultipleWordedField = "invalidemail"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -39,7 +40,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = "The 'Field' field is an invalid email address.";
+            const string defaultErrorMsg = "The 'MultipleWordedField' field is an invalid email address.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -71,7 +72,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithEmailAddressFieldWithoutCustomErrorMessage
             {
-                Field = "a@a.com"
+                MultipleWordedField = "a@a.com"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -82,6 +83,30 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeTrue();
             result.Count.ShouldBe(0);
+        }
+
+        [Test]
+        public void ConvertFieldNameToSnakeCaseIfSetInAppConfig()
+        {
+            //--Arrange
+            var model = new ModelWithEmailAddressFieldWithoutCustomErrorMessage()
+            {
+                MultipleWordedField = "invalidemail"
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            const string defaultErrorMsg = "The 'multiple_worded_field' field is an invalid email address.";
+            result[0].ErrorMessage
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
     }
 }

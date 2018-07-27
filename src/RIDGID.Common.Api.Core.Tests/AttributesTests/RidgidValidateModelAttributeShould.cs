@@ -2,7 +2,6 @@
 using RIDGID.Common.Api.Core.Attributes;
 using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
-using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -43,10 +42,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             {
                 Errors = { ModelStateCustomErrorMessage.Create(1, "ErrorMessage") }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "true";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(true);
 
             //--Act
             attribute.OnActionExecuting(actionContext);
@@ -71,10 +67,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
                     ModelStateCustomErrorMessage.Create(2, "ErrorMessage2")
                 }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "true";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(true);
 
             //--Act
             attribute.OnActionExecuting(actionContext);
@@ -96,10 +89,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             {
                 Errors = { ModelStateCustomErrorMessage.Create(1, "ErrorMessage") }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             attribute.OnActionExecuting(actionContext);
@@ -124,10 +114,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
                     ModelStateCustomErrorMessage.Create(2, "ErrorMessage2")
                 }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             attribute.OnActionExecuting(actionContext);
@@ -149,10 +136,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             {
                 Errors = { ModelStateCustomErrorMessage.Create(1, "ErrorMessage") }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "false";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             attribute.OnActionExecuting(actionContext);
@@ -177,10 +161,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
                     ModelStateCustomErrorMessage.Create(2, "ErrorMessage2")
                 }
             };
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "false";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             attribute.OnActionExecuting(actionContext);

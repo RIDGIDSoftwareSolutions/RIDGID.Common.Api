@@ -8,6 +8,7 @@ namespace RIDGID.Common.Api.Core
 {
     public class RidgidApiController : ApiController
     {
+        // Note just some responses are in here, if you need one that is not listed use the HttpGenericErrorResponse
         public IHttpActionResult HttpGenericErrorResponse(int errorId, string debugErrorMessage,
             HttpStatusCode httpStatusCode)
         {

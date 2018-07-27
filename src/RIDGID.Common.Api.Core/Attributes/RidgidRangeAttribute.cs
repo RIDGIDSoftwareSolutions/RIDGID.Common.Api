@@ -40,7 +40,7 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         private string CreateErrorMessage(string fieldName)
         {
-            return $"The value of the '{fieldName}' field must be between '{Mininum}' and '{Maximum}'.";
+            return $"The value of the '{FormatResponseMessage.GetCasing(fieldName)}' field must be between '{Mininum}' and '{Maximum}'.";
         }
     }
 }

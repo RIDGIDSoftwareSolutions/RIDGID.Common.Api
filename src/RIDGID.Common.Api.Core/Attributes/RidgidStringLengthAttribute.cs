@@ -36,7 +36,9 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         private string CreateErrorMessage(string fieldName)
         {
-            return $"The '{fieldName}' field must be between '{MininumLength}' and '{MaximumLength}' characters long.";
+            return MininumLength == MaximumLength
+                ? $"The '{FormatResponseMessage.GetCasing(fieldName)}' field must be '{MininumLength}' characters long."
+                : $"The '{FormatResponseMessage.GetCasing(fieldName)}' field must be between '{MininumLength}' and '{MaximumLength}' characters long.";
         }
     }
 }

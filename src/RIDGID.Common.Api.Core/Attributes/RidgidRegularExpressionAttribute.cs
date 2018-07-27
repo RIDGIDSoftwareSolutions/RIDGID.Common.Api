@@ -33,7 +33,7 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         private string CreateErrorMessage(string fieldName)
         {
-            return $"The '{fieldName}' field must match the regular expression: '{Regex}'.";
+            return $"The '{FormatResponseMessage.GetCasing(fieldName)}' field must match the regular expression: '{Regex}'.";
         }
     }
 }

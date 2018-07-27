@@ -10,7 +10,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
     internal class ModelWithRequiredFieldWithoutCustomErrorMessage
     {
         [RidgidRequired(1)]
-        public int? Field { get; set; }
+        public int? MultipleWordedField { get; set; }
     }
 
     internal class ModelWithRequiredFieldWithCustomErrorMessage
@@ -30,13 +30,36 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
 
+            FormatResponseMessage.SetSnakeCaseSetting(false);
+
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
 
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = "The 'Field' field is required.";
+            const string defaultErrorMsg = "The 'MultipleWordedField' field is required.";
+            result[0].ErrorMessage
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
+        }
+
+        [Test]
+        public void UseSnakeCaseForFieldNameWhenSet()
+        {
+            //--Arrange
+            var model = new ModelWithRequiredFieldWithoutCustomErrorMessage();
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            const string defaultErrorMsg = "The 'multiple_worded_field' field is required.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -65,7 +88,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithRequiredFieldWithoutCustomErrorMessage
             {
-                Field = 1
+                MultipleWordedField = 1
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();

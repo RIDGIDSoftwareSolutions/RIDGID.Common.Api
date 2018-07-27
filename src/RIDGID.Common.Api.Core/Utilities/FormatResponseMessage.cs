@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +13,11 @@ namespace RIDGID.Common.Api.Core.Utilities
         public static string CreateJson(object obj)
         {
             return JsonConvert.SerializeObject(obj, JsonSerializerSetting());
+        }
+
+        public static object GetObject(string json)
+        {
+            return JsonConvert.DeserializeObject(json, JsonSerializerSetting());
         }
 
         public static HttpResponseMessage CreateMessage(object responseBody, HttpStatusCode statusCode)
@@ -48,6 +54,51 @@ namespace RIDGID.Common.Api.Core.Utilities
                 {
                     ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(true, true) },
                 };
+        }
+
+        public static string ConvertCamelCaseIntoSnakeCase(string str)
+        {
+            var charList = new List<char>();
+            for (var i = 0; i < str.Length; i++)
+            {
+                if (char.IsUpper(str[i]))
+                {
+                    if (i != 0)
+                    {
+                        charList.Add('_');
+                    }
+                    charList.Add(char.ToLower(str[i]));
+                }
+                else
+                {
+                    charList.Add(str[i]);
+                }
+            }
+
+            var snakeCaseString = "";
+            foreach (var c in charList)
+            {
+                snakeCaseString += c;
+            }
+            return snakeCaseString;
+        }
+
+        public static void SetSnakeCaseSetting(bool value)
+        {
+            var valueAsString = "";
+            if (value)
+            {
+                valueAsString = "true";
+            }
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["snakecase"].Value = valueAsString;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        public static string GetCasing(string str)
+        {
+            return IsSnakeCase() ? ConvertCamelCaseIntoSnakeCase(str) : str;
         }
     }
 }

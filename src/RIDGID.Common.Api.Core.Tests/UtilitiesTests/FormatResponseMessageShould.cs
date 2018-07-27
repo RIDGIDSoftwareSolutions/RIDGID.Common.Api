@@ -19,10 +19,7 @@ namespace RIDGID.Common.Api.Core.Tests.UtilitiesTests
         public void IsSnakeCaseReturnsTrueWithAppConfigSnakeCaseSettingTrue()
         {
             //--Arrange
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["snakecase"].Value = "true";
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            FormatResponseMessage.SetSnakeCaseSetting(true);
 
             //--Act/Assert
             FormatResponseMessage.IsSnakeCase().ShouldBeTrue();
@@ -40,6 +37,20 @@ namespace RIDGID.Common.Api.Core.Tests.UtilitiesTests
 
             //--Act/Assert
             FormatResponseMessage.IsSnakeCase().ShouldBeFalse();
+        }
+
+        [Test]
+        public void GetCasing()
+        {
+            //--Arrange
+            const string camelCaseStr = "HelloMyNameIsBob";
+            const string expectedSnakeCase = "hello_my_name_is_bob";
+
+            //--Act
+            var result = FormatResponseMessage.ConvertCamelCaseIntoSnakeCase(camelCaseStr);
+
+            //--Assert
+            result.ShouldBe(expectedSnakeCase);
         }
     }
 }

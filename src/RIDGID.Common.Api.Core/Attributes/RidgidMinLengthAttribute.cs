@@ -30,7 +30,7 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         private string CreateErrorMessage(string fieldName)
         {
-            return $"The '{fieldName}' field must be less than '{Length}' characters long.";
+            return $"The '{FormatResponseMessage.GetCasing(fieldName)}' field must be less than '{Length}' characters long.";
         }
     }
 }

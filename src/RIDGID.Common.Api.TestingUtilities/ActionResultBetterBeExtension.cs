@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RIDGID.Common.Api.Core.Objects;
+using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
 using System;
 using System.Collections;
@@ -35,7 +36,8 @@ namespace RIDGID.Common.Api.TestingUtilities
             TModelType returnedModel;
             try
             {
-                returnedModel = JsonConvert.DeserializeObject<TModelType>(contentAsString);
+                returnedModel = JsonConvert.DeserializeObject<TModelType>(contentAsString,
+                    FormatResponseMessage.JsonSerializerSetting());
             }
             catch (JsonSerializationException)
             {

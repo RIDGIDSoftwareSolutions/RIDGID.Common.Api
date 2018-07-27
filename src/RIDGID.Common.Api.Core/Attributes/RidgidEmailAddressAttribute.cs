@@ -28,7 +28,7 @@ namespace RIDGID.Common.Api.Core.Attributes
 
         private static string CreateErrorMessage(string fieldName)
         {
-            return $"The '{fieldName}' field is an invalid email address.";
+            return $"The '{FormatResponseMessage.GetCasing(fieldName)}' field is an invalid email address.";
         }
     }
 }

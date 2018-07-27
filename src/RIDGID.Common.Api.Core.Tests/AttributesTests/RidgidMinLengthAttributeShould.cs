@@ -10,7 +10,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
     internal class ModelWithMinLengthFieldWithoutCustomErrorMessage
     {
         [RidgidMinLength(1, 2)]
-        public string Field { get; set; }
+        public string MultipleWordedField { get; set; }
     }
 
     internal class ModelWithMinLengthFieldWithCustomErrorMessage
@@ -28,10 +28,12 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithMinLengthFieldWithoutCustomErrorMessage
             {
-                Field = "1"
+                MultipleWordedField = "1"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(false);
 
             //--Act
             var valid = Validator.TryValidateObject(model, validationContext, result, true);
@@ -39,7 +41,31 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            var defaultErrorMsg = "The 'Field' field must be less than '2' characters long.";
+            const string defaultErrorMsg = "The 'MultipleWordedField' field must be less than '2' characters long.";
+            result[0].ErrorMessage
+                .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
+        }
+
+        [Test]
+        public void UseSnakeCaseInErrorMessageIfSet()
+        {
+            //--Arrange
+            var model = new ModelWithMinLengthFieldWithoutCustomErrorMessage
+            {
+                MultipleWordedField = "1"
+            };
+            var validationContext = new ValidationContext(model, null, null);
+            var result = new List<ValidationResult>();
+
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            var valid = Validator.TryValidateObject(model, validationContext, result, true);
+
+            //--Assert
+            valid.ShouldBeFalse();
+            result.Count.ShouldBe(1);
+            const string defaultErrorMsg = "The 'multiple_worded_field' field must be less than '2' characters long.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -71,7 +97,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithMinLengthFieldWithoutCustomErrorMessage
             {
-                Field = "12"
+                MultipleWordedField = "12"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -89,7 +115,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithMinLengthFieldWithoutCustomErrorMessage
             {
-                Field = "123"
+                MultipleWordedField = "123"
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
