@@ -173,6 +173,36 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
                 "{\"errors\":[{\"errorId\":1,\"debugErrorMessage\":\"ErrorMessage1\"},{\"errorId\":2,\"debugErrorMessage\":\"ErrorMessage2\"}]}");
         }
 
+        [Test]
+        public void ReturnOnlyDistinctErrors()
+        {
+            //--Arrange
+            var attribute = new RidgidValidateModelAttribute();
+            var actionContext = new HttpActionContext();
+            actionContext.ModelState["Field"] = new ModelState
+            {
+                Errors =
+                {
+                    ModelStateCustomErrorMessage.Create(1, "ErrorMessage1"),
+                    ModelStateCustomErrorMessage.Create(1, "ErrorMessage1"),
+                    ModelStateCustomErrorMessage.Create(2, "ErrorMessage2"),
+                    ModelStateCustomErrorMessage.Create(2, "ErrorMessage2"),
+                    ModelStateCustomErrorMessage.Create(3, "ErrorMessage3"),
+                    ModelStateCustomErrorMessage.Create(4, "ErrorMessage4")
+                }
+            };
+            FormatResponseMessage.SetSnakeCaseSetting(true);
+
+            //--Act
+            attribute.OnActionExecuting(actionContext);
+            var response = actionContext.Response;
+
+            //--Assert
+            var contentAsString = ContentAsString(actionContext, response);
+            contentAsString.ShouldBe(
+                "{\"errors\":[{\"error_id\":1,\"debug_error_message\":\"ErrorMessage1\"},{\"error_id\":2,\"debug_error_message\":\"ErrorMessage2\"},{\"error_id\":3,\"debug_error_message\":\"ErrorMessage3\"},{\"error_id\":4,\"debug_error_message\":\"ErrorMessage4\"}]}");
+        }
+
         private static string ContentAsString(HttpActionContext actionContext, HttpResponseMessage response)
         {
             actionContext.ModelState.Count.ShouldBe(1);
