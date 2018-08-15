@@ -14,7 +14,10 @@ namespace RIDGID.Common.Api.Core.Attributes
             if (actionContext.ModelState.IsValid) return;
             var errorMessages = (from key in actionContext.ModelState.Keys
                                  from error in actionContext.ModelState[key].Errors
-                                 select ModelStateCustomErrorMessage.Parse(error.ErrorMessage)).ToList();
+                                 select ModelStateCustomErrorMessage.Parse(error.ErrorMessage))
+                                 .GroupBy(x => new { x.ErrorId, x.DebugErrorMessage })
+                                 .Select(x => x.First())
+                                 .ToList();
             var errorsResponseObject = new ErrorsResponse
             {
                 Errors = errorMessages
