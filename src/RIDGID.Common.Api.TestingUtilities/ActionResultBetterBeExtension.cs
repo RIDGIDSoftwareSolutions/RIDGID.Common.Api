@@ -45,33 +45,41 @@ namespace RIDGID.Common.Api.TestingUtilities
             }
             returnedModel.ShouldNotBeNull();
 
-            if (FieldIsEnumerable(expectedResult))
+            AssertThatTwoObjectsAreTheSame(returnedModel, expectedResult);
+
+            CheckLocationHeader(actionResult, expectedLocationHeader);
+        }
+
+        private static void AssertThatTwoObjectsAreTheSame<TModelType>(TModelType returnedResult, TModelType expectedResult)
+        {
+            if (expectedResult == null)
             {
-                CheckValuesOfEnumerableField((IEnumerable<object>)expectedResult, 0, (IEnumerable<object>)returnedModel, true);
+                returnedResult.ShouldBeNull();
             }
             else if (IsSimpleType(expectedResult.GetType()))
             {
-                returnedModel.ShouldBe(expectedResult);
+                returnedResult.ShouldBe(expectedResult);
             }
-            else
+            else if (FieldIsEnumerable(expectedResult))
             {
-                var expectedFieldValues = GetFieldValuesForModel(expectedResult).ToList();
-                var returnedFieldValues = GetFieldValuesForModel(returnedModel).ToList();
+                var returnedList = ((IEnumerable<object>)returnedResult).ToList();
+                var expectedList = ((IEnumerable<object>)expectedResult).ToList();
 
-                for (var fieldIndex = 0; fieldIndex < expectedFieldValues.Count; fieldIndex++)
+                for (var i = 0; i < returnedList.Count; i++)
                 {
-                    var field = expectedFieldValues[fieldIndex];
-                    if (FieldIsEnumerable(field))
-                    {
-                        CheckValuesOfEnumerableField(expectedFieldValues, fieldIndex, returnedFieldValues, false);
-                    }
-                    else
-                    {
-                        field.ShouldBe(returnedFieldValues[fieldIndex]);
-                    }
+                    AssertThatTwoObjectsAreTheSame(returnedList[i], expectedList[i]);
                 }
             }
-            CheckLocationHeader(actionResult, expectedLocationHeader);
+            else // is complex type
+            {
+                var expectedFieldValues = GetFieldValuesForModel(expectedResult).ToList();
+                var returnedFieldValues = GetFieldValuesForModel(returnedResult).ToList();
+
+                for (var i = 0; i < returnedFieldValues.Count; i++)
+                {
+                    AssertThatTwoObjectsAreTheSame(returnedFieldValues[i], expectedFieldValues[i]);
+                }
+            }
         }
 
         private static void CheckLocationHeader(IHttpActionResult actionResult, string expectedLocationHeader)
@@ -110,59 +118,10 @@ namespace RIDGID.Common.Api.TestingUtilities
             return isEnumerable;
         }
 
-        private static void CheckValuesOfEnumerableField(IEnumerable<object> expectedFieldValues, int fieldIndex,
-            IEnumerable<object> returnedFieldValues, bool isRoot)
-        {
-            var expectedFieldAsList = expectedFieldValues.ToList();
-            var returnedFieldAsList = returnedFieldValues.ToList();
-
-            if (!isRoot)
-            {
-                expectedFieldAsList = ((IEnumerable<object>)expectedFieldAsList.ToList()[fieldIndex]).ToList();
-                returnedFieldAsList = ((IEnumerable<object>)returnedFieldAsList.ToList()[fieldIndex]).ToList();
-            }
-
-            for (var i = 0; i < expectedFieldAsList.Count; i++)
-            {
-                var field = expectedFieldAsList[i];
-                if (FieldIsEnumerable(field))
-                {
-                    CheckValuesOfEnumerableField((IEnumerable<object>)field, i,
-                        (IEnumerable<object>)returnedFieldAsList[i], false);
-                }
-                else if (IsSimpleType(field.GetType()))
-                {
-                    returnedFieldAsList[i].ShouldBe(expectedFieldAsList[i]);
-                }
-                else
-                {
-                    var expectedFieldSubFieldList = GetFieldValuesForModel(field).ToList();
-                    var returnedFieldSubFieldList = GetFieldValuesForModel(returnedFieldAsList[i]).ToList();
-                    for (var j = 0; j < expectedFieldSubFieldList.Count(); j++)
-                    {
-                        var expectedFieldSubField = expectedFieldSubFieldList[j];
-                        var returnedFieldSubField = returnedFieldSubFieldList[j];
-                        expectedFieldSubField.ShouldBe(returnedFieldSubField);
-                    }
-                }
-            }
-        }
-
-        private static IEnumerable<object> GetFieldValuesForModel<TModelType>(TModelType model)
+        public static IEnumerable<object> GetFieldValuesForModel<TModelType>(TModelType model)
         {
             var modelTypeInfo = model.GetType().GetTypeInfo();
             var properties = modelTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
-
-            var baseTypeInfo = modelTypeInfo.BaseType.GetTypeInfo();
-
-            var baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
-
-            while (baseProperties.Count > 0)
-            {
-                properties.AddRange(baseProperties);
-                baseTypeInfo = baseTypeInfo.BaseType.GetTypeInfo();
-                baseProperties = baseTypeInfo.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).ToList();
-            };
 
             var fieldValues = new List<object>();
             foreach (var field in properties)

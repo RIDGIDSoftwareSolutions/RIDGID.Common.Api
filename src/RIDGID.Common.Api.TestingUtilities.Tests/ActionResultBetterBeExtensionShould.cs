@@ -6,6 +6,7 @@ using RIDGID.Common.Api.Core.Utilities;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -358,7 +359,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
 
             //--Act/Assert
-            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
         [Test]
@@ -407,6 +408,24 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             actionResult.BetterBeNull(HttpStatusCode.Created, "https://link");
         }
 
+        [Test]
+        public void GetFieldValuesForModelReturnsCorrectNumberOfFieldsForTestFieldObjectWithBaseClass()
+        {
+            //--Arrange
+            var expectedResult = new TestMessage
+            {
+                Email = "hola",
+                FirstName = "hola1",
+                Username = "hola2",
+                LastName = "hola3"
+            };
+
+            //--Act
+            var result = ActionResultBetterBeExtension.GetFieldValuesForModel(expectedResult);
+
+            //--Assert
+            result.Count().ShouldBe(5);
+        }
     }
 
     public class TestActionResult : IHttpActionResult
