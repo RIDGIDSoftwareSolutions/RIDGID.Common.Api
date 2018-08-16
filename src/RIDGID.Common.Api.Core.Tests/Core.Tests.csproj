@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributesTests\RidgidEmailAddressAttributeShould.cs" />
+    <Compile Include="AttributesTests\RidgidIso8601DateTimeAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidMaxLengthAttributeshould.cs" />
     <Compile Include="AttributesTests\RidgidMinLengthAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidRangeAttributeShould.cs" />

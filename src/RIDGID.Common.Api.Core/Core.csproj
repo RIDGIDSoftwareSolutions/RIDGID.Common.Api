@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\RidgidAuthorizeAttribute.cs" />
+    <Compile Include="Attributes\RidgidIso8601DateTimeAttribute.cs" />
     <Compile Include="Attributes\RidgidEmailAddressAttribute.cs" />
     <Compile Include="Attributes\RidgidMaxLengthAttribute.cs" />
     <Compile Include="Attributes\RidgidMinLengthAttribute.cs" />
