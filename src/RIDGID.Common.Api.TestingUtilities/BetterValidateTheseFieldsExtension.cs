@@ -63,6 +63,11 @@ namespace RIDGID.Common.Api.TestingUtilities
                         ValidateRangeAttribute(fieldValidation, property);
                         break;
                     }
+                case RidgidValidationType.Iso8601DateTimeAttribute:
+                    {
+                        ValidateIso8601DateTimeAttribute(fieldValidation, property);
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -157,6 +162,14 @@ namespace RIDGID.Common.Api.TestingUtilities
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
         }
 
+        private static void ValidateIso8601DateTimeAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        {
+            var attribute = (RidgidIso8601DateTimeAttribute)property.GetCustomAttribute(
+                                typeof(RidgidIso8601DateTimeAttribute), true) ??
+                            throw new RidgidIso8601DateTimeAttributeNotFoundException(property.Name);
+            attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
+            attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
+        }
 
         private static PropertyInfo GetPropertyForFieldName<TModelType>(RidgidFieldValidation fieldValidation)
         {

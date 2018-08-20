@@ -13,7 +13,7 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
     public class BetterValidateTheseFieldsExtensionShould
     {
         [Test]
-        public void ThrowFieldNotFoundExceptionIfFieldNameNosoundOnModel()
+        public void ThrowFieldNotFoundExceptionIfFieldNameNotFoundOnModel()
         {
             //--Arrange
             var model = new object();
@@ -29,6 +29,8 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 }));
         }
+
+        #region RidgidEmailAddressAttribute
 
         [Test]
         public void FailIfRidgidEmailAddressAttributeIsMissingFromFieldName()
@@ -50,7 +52,6 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
         [Test]
         public void FailIfRidgidEmailAddressAttributeHasWrongErrorId()
         {
-
             //--Arrange
             var model = new ShouldValidateExtensionTestModel();
 
@@ -69,7 +70,6 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
         [Test]
         public void FailIfRidgidEmailAddressAttributeHasWrongErrorMessage()
         {
-
             //--Arrange
             var model = new ShouldValidateExtensionTestModel();
 
@@ -89,7 +89,6 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
         [Test]
         public void PassIfRidgidEmailAddressMatches()
         {
-
             //--Arrange
             var model = new ShouldValidateExtensionTestModel();
 
@@ -105,6 +104,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 });
         }
+
+        #endregion RidgidEmailAddressAttribute
+
+        #region RidgidMaxLengthAttribute
 
         [Test]
         public void FailIfRidgidMaxLengthAttributeIsMissingFromFieldName()
@@ -200,6 +203,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 });
         }
 
+        #endregion RidgidMaxLengthAttribute
+
+        #region RidgidMinLengthAttribute
+
         [Test]
         public void FailIfRidgidMinLengthAttributeIsMissingFromFieldName()
         {
@@ -293,6 +300,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 });
         }
+
+        #endregion RidgidMinLengthAttribute
+
+        #region RidgidRegularExpressionAttribute
 
         [Test]
         public void FailIfRidgidRegularExpressionAttributeIsMissingFromFieldName()
@@ -388,6 +399,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 });
         }
 
+        #endregion RidgidRegularExpressionAttribute
+
+        #region RidgidRequiredAttribute
+
         [Test]
         public void FailIfRidgidRequiredAttributeIsMissingFromFieldName()
         {
@@ -460,6 +475,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 });
         }
+
+        #endregion RidgidRequiredAttribute
+
+        #region RidgidStringLengthAttribute
 
         [Test]
         public void FailIfRidgidStringLengthAttributeIsMissingFromFieldName()
@@ -577,6 +596,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 });
         }
 
+        #endregion RidgidStringLengthAttribute
+
+        #region RidgidRangeAttribute
+
         [Test]
         public void FailIfRidgidRangeAttributeIsMissingFromFieldName()
         {
@@ -630,7 +653,6 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                     }
                 }));
         }
-
 
         [Test]
         public void FailIfRidgidRangeAttributeHasWrongErrorMessage()
@@ -717,6 +739,86 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 });
         }
 
+        #endregion RidgidRangeAttribute
+
+        #region RidgidIso8601DateTimeAttribute
+
+        [Test]
+        public void FailIfRidgidIso8601DateTimeAttributeIsMissingFromFieldName()
+        {
+            //--Arrange
+            var model = new { Field = 1 };
+
+            //--Act
+            Should.Throw<RidgidIso8601DateTimeAttributeNotFoundException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidIso8601DateTimeFieldValidation()
+                    {
+                        FieldName = nameof(model.Field)
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidIso8601DateTimeHasWrongErrorId()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidIso8601DateTimeFieldValidation
+                    {
+                        ErrorId = 2,
+                        FieldName = nameof(model.StartDate)
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidIso8601DateTimeHasWrongErrorMessage()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidIso8601DateTimeFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ExpectedErrorMessage",
+                        FieldName = nameof(model.StartDate)
+                    }
+                }));
+        }
+
+        [Test]
+        public void PassIfRidgidIso8601DateTimeMatches()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidIso8601DateTimeFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ActualErrorMessage",
+                        FieldName = nameof(model.StartDate)
+                    }
+                });
+        }
+
+        #endregion
+
+        #region NonRidgidAttribute
 
         [Test]
         public void ThrowExceptionIfNonRidgidAttributeIsOnModel()
@@ -729,7 +831,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
                 new List<RidgidFieldValidation>()));
         }
 
+        #endregion NonRidgidAttribute
     }
+
+    #region InternalClasses
 
     internal class ModelWithNonRidgidAttribute
     {
@@ -759,5 +864,10 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
 
         [RidgidRange(1, typeof(int), "1", "2", "ActualErrorMessage")]
         public string Range { get; set; }
+
+        [RidgidIso8601DateTime(1, "ActualErrorMessage")]
+        public string StartDate { get; set; }
     }
+
+    #endregion InternalClasses
 }
