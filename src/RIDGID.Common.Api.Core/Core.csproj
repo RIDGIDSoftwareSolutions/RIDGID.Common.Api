@@ -51,6 +51,7 @@
     <Compile Include="Attributes\RidgidEmailAddressAttribute.cs" />
     <Compile Include="Attributes\RidgidMaxLengthAttribute.cs" />
     <Compile Include="Attributes\RidgidMinLengthAttribute.cs" />
+    <Compile Include="Attributes\RidgidPositiveIntegerAttribute.cs" />
     <Compile Include="Attributes\RidgidRangeAttribute.cs" />
     <Compile Include="Attributes\RidgidValidateModelAttribute.cs" />
     <Compile Include="Attributes\RidgidRegularExpressionAttribute.cs" />

@@ -68,6 +68,11 @@ namespace RIDGID.Common.Api.TestingUtilities
                         ValidateIso8601DateTimeAttribute(fieldValidation, property);
                         break;
                     }
+                case RidgidValidationType.PositiveIntegerAttribute:
+                    {
+                        ValidatePositiveIntegerAttribute(fieldValidation, property);
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -167,6 +172,15 @@ namespace RIDGID.Common.Api.TestingUtilities
             var attribute = (RidgidIso8601DateTimeAttribute)property.GetCustomAttribute(
                                 typeof(RidgidIso8601DateTimeAttribute), true) ??
                             throw new RidgidIso8601DateTimeAttributeNotFoundException(property.Name);
+            attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
+            attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
+        }
+
+        private static void ValidatePositiveIntegerAttribute(RidgidFieldValidation fieldValidation, PropertyInfo property)
+        {
+            var attribute = (RidgidPositiveIntegerAttribute)property.GetCustomAttribute(
+                                typeof(RidgidPositiveIntegerAttribute), true) ??
+                            throw new RidgidPositiveIntegerAttributeNotFoundException(property.Name);
             attribute.ErrorId.ShouldBe(fieldValidation.ErrorId);
             attribute.CustomErrorMessage.ShouldBe(fieldValidation.ErrorMessage);
         }

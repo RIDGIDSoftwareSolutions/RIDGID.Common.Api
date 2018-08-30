@@ -59,6 +59,7 @@
     <Compile Include="AttributesTests\RidgidIso8601DateTimeAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidMaxLengthAttributeshould.cs" />
     <Compile Include="AttributesTests\RidgidMinLengthAttributeShould.cs" />
+    <Compile Include="AttributesTests\RidgidPositiveIntegerAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidRangeAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidValidateModelAttributeShould.cs" />
     <Compile Include="AttributesTests\RidgidRegularExpressionAttributeShould.cs" />

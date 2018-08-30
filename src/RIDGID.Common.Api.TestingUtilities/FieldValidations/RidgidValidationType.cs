@@ -9,6 +9,7 @@
         RequiredAttribute = 5,
         StringLengthAttribute = 6,
         RangeAttribute = 7,
-        Iso8601DateTimeAttribute = 8
+        Iso8601DateTimeAttribute = 8,
+        PositiveIntegerAttribute = 9
     }
 }

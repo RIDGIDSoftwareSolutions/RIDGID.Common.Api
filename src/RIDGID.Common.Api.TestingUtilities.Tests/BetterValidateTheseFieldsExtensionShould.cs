@@ -818,6 +818,101 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
 
         #endregion
 
+        #region RidgidPositiveIntegerAttribute
+
+        [Test]
+        public void FailIfRidgidPositiveIntegerAttributeIsMissingFromFieldName()
+        {
+            //--Arrange
+            var model = new { Field = 1 };
+
+            //--Act
+            Should.Throw<RidgidPositiveIntegerAttributeNotFoundException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidPositiveIntegerFieldValidation
+                    {
+                        FieldName = nameof(model.Field)
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidPositiveIntegerAttributeHasWrongErrorId()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidPositiveIntegerFieldValidation
+                    {
+                        ErrorId = 2,
+                        FieldName = nameof(model.ProductId),
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidPositiveIntegerAttributeHasWrongType()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidPositiveIntegerFieldValidation
+                    {
+                        ErrorId = 2,
+                        FieldName = nameof(model.ProductId)
+                    }
+                }));
+        }
+
+        [Test]
+        public void FailIfRidgidPositiveIntegerAttributeHasWrongErrorMessage()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            Should.Throw<ShouldAssertException>(() => model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidPositiveIntegerFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ExpectedErrorMessage",
+                        FieldName = nameof(model.ProductId)
+                    }
+                }));
+        }
+
+        [Test]
+        public void PassIfRidgidPositiveIntegerAttributeMatches()
+        {
+            //--Arrange
+            var model = new ShouldValidateExtensionTestModel();
+
+            //--Act
+            model.ShouldValidateTheseFields(
+                new List<RidgidFieldValidation>
+                {
+                    new RidgidPositiveIntegerFieldValidation
+                    {
+                        ErrorId = 1,
+                        ErrorMessage = "ActualErrorMessage",
+                        FieldName = nameof(model.ProductId)
+                    }
+                });
+        }
+
+        #endregion
+
         #region NonRidgidAttribute
 
         [Test]
@@ -867,6 +962,9 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
 
         [RidgidIso8601DateTime(1, "ActualErrorMessage")]
         public string StartDate { get; set; }
+
+        [RidgidPositiveInteger(1, "ActualErrorMessage")]
+        public int? ProductId { get; set; }
     }
 
     #endregion InternalClasses

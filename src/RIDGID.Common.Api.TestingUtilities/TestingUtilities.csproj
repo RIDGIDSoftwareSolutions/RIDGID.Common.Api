@@ -51,8 +51,10 @@
     <Compile Include="ActionResultBetterBeExtension.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Exceptions\RidgidIso8601DateTimeAttributeNotFoundException.cs" />
+    <Compile Include="Exceptions\RidgidPositiveIntegerAttributeNotFoundException.cs" />
     <Compile Include="Exceptions\RidgidRangeAttributeNotFoundException.cs" />
     <Compile Include="FieldValidations\RidgidIso8601DateTimeFieldValidation.cs" />
+    <Compile Include="FieldValidations\RidgidPositiveIntegerFieldValidation.cs" />
     <Compile Include="FieldValidations\RidgidRangeFieldValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\RidgidEmailAddressAttributeNotFoundException.cs" />
