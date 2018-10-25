@@ -5,7 +5,7 @@ namespace RIDGID.Common.Api.Core.Attributes
 {
     public class RidgidPositiveIntegerAttribute : RidgidValidationAttribute
     {
-        private const int MIN = 1;
+        private const int MIN = 0;
         private const int MAX = int.MaxValue;
 
         public RidgidPositiveIntegerAttribute(int errorId) : base(errorId)

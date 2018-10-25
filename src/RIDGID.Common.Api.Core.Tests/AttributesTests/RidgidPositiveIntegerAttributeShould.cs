@@ -31,7 +31,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithPositiveIntFieldWithoutCustomErrorMessage
             {
-                CustomId = 0
+                CustomId = -1
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -44,7 +44,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            string defaultErrorMsg = $"The 'CustomId' field must be an integer value between '1' and '{int.MaxValue}'.";
+            string defaultErrorMsg = $"The 'CustomId' field must be an integer value between '0' and '{int.MaxValue}'.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -55,7 +55,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithPositiveIntFieldWithoutCustomErrorMessage
             {
-                CustomId = 0
+                CustomId = -1
             };
             var validationContext = new ValidationContext(model, null, null);
             var result = new List<ValidationResult>();
@@ -68,7 +68,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Assert
             valid.ShouldBeFalse();
             result.Count.ShouldBe(1);
-            string defaultErrorMsg = $"The 'custom_id' field must be an integer value between '1' and '{int.MaxValue}'.";
+            string defaultErrorMsg = $"The 'custom_id' field must be an integer value between '0' and '{int.MaxValue}'.";
             result[0].ErrorMessage
                 .ShouldBe(ModelStateCustomErrorMessage.Create(1, defaultErrorMsg));
         }
@@ -79,7 +79,7 @@ namespace RIDGID.Common.Api.Core.Tests.AttributesTests
             //--Arrange
             var model = new ModelWithPositiveIntFieldWithCustomErrorMessage
             {
-                CustomId = 0
+                CustomId = -1
             };
 
             var validationContext = new ValidationContext(model, null, null);
