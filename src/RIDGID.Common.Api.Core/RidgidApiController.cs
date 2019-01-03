@@ -12,19 +12,7 @@ namespace RIDGID.Common.Api.Core
         internal IHttpActionResult HttpGenericErrorResponse(int errorId, string debugErrorMessage,
             HttpStatusCode httpStatusCode)
         {
-            var errors = new List<ErrorMessage>
-            {
-                new ErrorMessage
-                {
-                    DebugErrorMessage = debugErrorMessage,
-                    ErrorId = errorId
-                }
-            };
-            var errorsResponse = new ErrorsResponse
-            {
-                Errors = errors
-            };
-            return new HttpGenericResult(this, httpStatusCode, errorsResponse);
+            return FormatResponseMessage.CreateErrorResponse(this, errorId, debugErrorMessage, httpStatusCode);
         }
 
         internal virtual IHttpActionResult NoContent()

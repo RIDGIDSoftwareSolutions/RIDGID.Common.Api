@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingUtilities", "RIDGID.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingUtilities.Tests", "RIDGID.Common.Api.TestingUtilities.Tests\TestingUtilities.Tests.csproj", "{34283C28-BA56-4D3B-A2E8-F2D2AF82651A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestWebApplication", "IntegrationTestWebApplication\IntegrationTestWebApplication.csproj", "{1D8C373F-6CE8-4383-8D47-1C19F1301927}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{34283C28-BA56-4D3B-A2E8-F2D2AF82651A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34283C28-BA56-4D3B-A2E8-F2D2AF82651A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34283C28-BA56-4D3B-A2E8-F2D2AF82651A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D8C373F-6CE8-4383-8D47-1C19F1301927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D8C373F-6CE8-4383-8D47-1C19F1301927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D8C373F-6CE8-4383-8D47-1C19F1301927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D8C373F-6CE8-4383-8D47-1C19F1301927}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

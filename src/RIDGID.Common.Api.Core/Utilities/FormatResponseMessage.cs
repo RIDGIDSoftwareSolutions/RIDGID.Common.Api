@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web.Http;
+using RIDGID.Common.Api.Core.Objects;
 
 namespace RIDGID.Common.Api.Core.Utilities
 {
@@ -18,6 +20,23 @@ namespace RIDGID.Common.Api.Core.Utilities
         public static object GetObject(string json)
         {
             return JsonConvert.DeserializeObject(json, JsonSerializerSetting());
+        }
+
+        public static IHttpActionResult CreateErrorResponse(ApiController apiControllerThatGeneratedError, int errorId, string debugErrorMessage, HttpStatusCode httpStatusCode)
+        {
+            var errors = new List<ErrorMessage>
+            {
+                new ErrorMessage
+                {
+                    DebugErrorMessage = debugErrorMessage,
+                    ErrorId = errorId
+                }
+            };
+            var errorsResponse = new ErrorsResponse
+            {
+                Errors = errors
+            };
+            return new HttpGenericResult(apiControllerThatGeneratedError, httpStatusCode, errorsResponse);
         }
 
         public static HttpResponseMessage CreateMessage(object responseBody, HttpStatusCode statusCode)
