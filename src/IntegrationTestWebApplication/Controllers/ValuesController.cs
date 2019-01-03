@@ -20,7 +20,7 @@ namespace IntegrationTestWebApplication.Controllers
         
         [HttpGet]
         [RidgidValidateModel]
-        public IHttpActionResult ModelWithARequiredAttribute([FromUri] ModelWithRequiredAttribute model)
+        public IHttpActionResult ResourceWithRequiredFields([FromUri] ModelWithRequiredAttribute model)
         {
             return Ok();
         }
@@ -29,6 +29,9 @@ namespace IntegrationTestWebApplication.Controllers
     public class ModelWithRequiredAttribute
     {
         [RidgidRequired(1)]
-        public string RequiredField { get; set; }
+        public string RequiredFieldWithEmptyAllowed { get; set; }
+
+        [RidgidRequired(2)]
+        public string RequiredFieldWithEmptyNotAllowed { get; set; }
     }
 }

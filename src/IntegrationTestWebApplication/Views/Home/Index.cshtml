@@ -3,9 +3,21 @@
 </div>
 <div>
     <div>
+        <a href="/api/values/ResourceWithRequiredFields?requiredFieldWithEmptyAllowed=value1&requiredFieldWithEmptyNotAllowed=value2">200 OK response that passes all required fields via query string</a>
+    </div>
+
+    <div>
         <a href="/api/values/UnhandledException">Call action with unhandled exception</a>
     </div>
     <div>
-        <a href="/api/values/ModelWithARequiredAttribute">Call method with required parameter</a>
+        <a href="/api/values/ResourceWithRequiredFields">Call method with all required fields missing</a>
+    </div>
+    @*
+        Couldn't figure out how to ever pass in an empty value via a URI. This will resolve to NULL and model validation will fail anyway.
+        <div>
+        <a href="/api/values/ResourceWithRequiredFields?requiredFieldWithEmptyAllowed= &requiredFieldWithEmptyNotAllowed=value2">Call method with all required fields and empty value for field that allows empty value (but is required)</a>
+    </div>*@
+    <div>
+        <a href="/api/values/ResourceWithRequiredFields?requiredFieldWithEmptyAllowed=value1">Call method with one required field missing</a>
     </div>
 </div>
