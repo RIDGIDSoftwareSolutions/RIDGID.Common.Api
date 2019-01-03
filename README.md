@@ -20,7 +20,7 @@ Responses have the following structure in the body:
 
 ## To Use In Your API
 1. Make controller inherit from RidgidApiController
-2. Add the `[RidgidModelValidation]` attribute to the controller method
+2. Add the `[RidgidValidateModel]` attribute to the controller method
 3. Add any of the custom attributes to the property on the model being passed into the controller, e.g., `[RidgidRequired(ErrorId)]`
 4. Write a Unit Test to test the model by doing:
 
