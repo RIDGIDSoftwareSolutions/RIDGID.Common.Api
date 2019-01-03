@@ -1,27 +1,85 @@
 # RIDGID.Common.Api
-RIDGID.Common.Api is a REST Api response formatting system that adds an error ID to the response message when an error has occurred. It does model validation, and testing utilities are included.
+RIDGID.Common.Api is a REST Api response formatting system that automatically returns all error responses in the clean format listed below. The benefits of this aproach are cleaner response parsing when there are multiple validation errors with the same status code in your API (e.g. multiple missing fields).
 
-Responses have the following structure in the body:
+Below is an example of a 400 Bad Request with two model validation errors:
 
 ```json
 {
-  "Errors": [    
+  "errors": [    
     {
-      "DebugErrorMessage": "Username must be between 6 and 255 characters long.",
-      "ErrorId": 1
+      "debugErrorMessage": "Username must be between 6 and 255 characters long.",
+      "errorId": 1
     },
     {
-      "DebugErrorMessage": "Username cannot contain special characters.",
-      "ErrorId": 2
+      "debugErrorMessage": "Username cannot contain special characters.",
+      "errorId": 2
     }
   ]
 }
 ```
 
 ## To Use In Your API
-1. Make controller inherit from RidgidApiController
+1. Make controller inherit from RidgidApiController (if you want to get access to convenient methods for returning error responses in the above format). E.g.:
+  ```
+    public class SomeController : RidgidApiController
+    {
+        public const int ArbitraryValueNotValidError = 1;
+        
+        public IHttpActionResult SomeAction(string someValue)
+        {
+            if(ValueChecker.CheckArbitraryExampleValue(someValue))
+            {
+                return BadRequest(ArbitraryValueNotValidError, "Sorry but this value is not valid. Try a different one.");
+            }
+        }
+    }
+  ```
+   A request to ```/api/Some/SomeAction?someValue=invalidValue``` will yield the following HTTP 400 Bad Request response:
+    
+   ```json
+    {
+      "errors": [    
+        {
+          "debugErrorMessage": "Sorry but this value is not valid. Try a different one.",
+          "errorId": 1
+        }
+      ]
+    }
+  ```
+  
+  
 2. Add the `[RidgidValidateModel]` attribute to the controller method
 3. Add any of the custom attributes to the property on the model being passed into the controller, e.g., `[RidgidRequired(ErrorId)]`
+   Combining #2 and #3 above lets you do stuff like the following:
+     ```
+    [HttpPost]
+    [RidgidValidateModel]
+    public IHttpActionResult SomeAction(Person person)
+    {
+        //--do your stuff here without writing any nasty code about the model state or returning different status codes
+        
+        return OK();
+    }
+
+    public class Person
+    {
+        public const int SocialSecurityNumberNotSet = 1;
+        public const int FirstNameNotSet = 2;
+        public const int SecretPassCodeTooShort = 3; 
+
+        [RidgidRequired(SocialSecurityNumberNotSet)]
+        public string SocialSecurityNumber { get; set; }
+
+        [RidgidRequired(FirstNameNotSet)]
+        public string FirstName { get; set; }
+
+        [RidgidMinLength(SecretPassCodeTooShort)]
+        public int NumberOfBoardGamesOwned { get; set; }
+    }
+    ``` 
+   
+
+    
 4. Write a Unit Test to test the model by doing:
 
     ```c#
@@ -69,5 +127,5 @@ Add to your API's app.config appSettings:
 ```
 
  ### To Build Nuget Package
- ```nuget pack TestingUtilities.csproj -Version 1.0.0.0 -properties Configuration=Release -IncludeReferencedProjects```
+ ```nuget pack TestingUtilities.csproj -Version {semantif version} -properties Configuration=Release -IncludeReferencedProjects```
  
