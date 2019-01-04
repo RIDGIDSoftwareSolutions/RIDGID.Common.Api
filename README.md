@@ -17,10 +17,9 @@ Below is an example of a 400 Bad Request with two model validation errors:
   ]
 }
 ```
-
-## To Use In Your API
-1. Make controller inherit from RidgidApiController (if you want to get access to convenient methods for returning error responses in the above format). E.g.:
-  ```
+## To Get Useful Helper Methods in your Web API Controllers
+Make your controller inherit from RidgidApiController (if you want to get access to convenient methods for returning error responses in the above format). E.g.:
+  ```C#
     public class SomeController : RidgidApiController
     {
         public const int ArbitraryValueNotValidError = 1;
@@ -47,11 +46,15 @@ Below is an example of a 400 Bad Request with two model validation errors:
     }
   ```
   
-  
-2. Add the `[RidgidValidateModel]` attribute to the controller method
-3. Add any of the custom attributes to the property on the model being passed into the controller, e.g., `[RidgidRequired(ErrorId)]`
-   Combining #2 and #3 above lets you do stuff like the following:
-     ```
+  Not all status codes have helper methods, so you can always use:
+
+ ```return GenericHttpErrorResponse(1, "Message you want to give back to client", HttpStatusCodes.PaymentRequired);```
+
+## To Use Fancy Automatic Model Validation
+If you want to annotate your models' properties so that you get the above error response schema:
+1. Add the `[RidgidValidateModel]` attribute to the controller method. E.g.:
+
+```C#
     [HttpPost]
     [RidgidValidateModel]
     public IHttpActionResult SomeAction(Person person)
@@ -61,48 +64,46 @@ Below is an example of a 400 Bad Request with two model validation errors:
         return OK();
     }
 
-    public class Person
-    {
-        public const int SocialSecurityNumberNotSet = 1;
-        public const int FirstNameNotSet = 2;
-        public const int SecretPassCodeTooShort = 3; 
+```
+2. Annotate your model attributes with the Ridgid* attribute(s) that you want to use for validation. Note that the errorId should be unique for a given endpoint and HTTP status code. 
+This way you could have 3 different 400 Bad Request model validation errors that can be easily parsed in the client by their unique Id. E.g.:
 
-        [RidgidRequired(SocialSecurityNumberNotSet)]
-        public string SocialSecurityNumber { get; set; }
+```C#
+public class Person
+{
+    public const int SocialSecurityNumberNotSet = 1;
+    public const int FirstNameNotSet = 2;
+    public const int SecretPassCodeTooShort = 3; 
 
-        [RidgidRequired(FirstNameNotSet)]
-        public string FirstName { get; set; }
+    [RidgidRequired(SocialSecurityNumberNotSet)]
+    public string SocialSecurityNumber { get; set; }
 
-        [RidgidMinLength(SecretPassCodeTooShort)]
-        public int NumberOfBoardGamesOwned { get; set; }
+    [RidgidRequired(FirstNameNotSet)]
+    public string FirstName { get; set; }
+
+    [RidgidMinLength(SecretPassCodeTooShort)]
+    public int NumberOfBoardGamesOwned { get; set; }
+}
+```
+
+## To Unit Test Your Model Validation
+This package comes with Shouldly-style extension methods that allow you to test that specific attributes are applied to specific properties. E.g.:
+
+```C#
+  model.ShouldValidateTheseFields {
+    new RidgidRequiredFieldValidation {
+      ErrorId = errorId,
+      FieldName = "FieldName"
     }
-    ``` 
-   
-
+  }
+```
     
-4. Write a Unit Test to test the model by doing:
+## To Have Unhandled Exceptions Use The Same Response Schema
+In order to make sure undhandled exceptions use this same response format, just register the following as your IExceptionHandler in your WebApi.config:
 
-    ```c#
-      model.ShouldValidateTheseFields {
-        new RidgidRequiredFieldValidation {
-        ErrorId = errorId,
-        FieldName = "FieldName"
-      },
-      ...
-    }
-    ```
-
-using one of the RidgidFieldValidation subclasses, e.g., RidgidRequiredFieldValidation, RidgidStringLengthFieldValidation
-
-5. For non model validation error responses use:
-    ```
-    return Conflict(1, "message");
-    return BadRequest(1, "message");
-    return NotFound(1, "message");
-    return GenericHttpErrorResponse(1, "message", HttpStatusCodes.PaymentRequired);
-    ```  
-    Etc.
-  
+```C#
+  config.Services.Replace(typeof(IExceptionHandler), new RidgidApiExceptionHandler());
+```
  
 ### Snakecase Property Names
 To make the response body like the following:
