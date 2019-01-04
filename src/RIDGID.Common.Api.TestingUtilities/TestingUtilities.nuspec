@@ -5,13 +5,13 @@
     <version>$version$</version>
     <authors>Ridge Tool Company</authors>
     <owners>Ridge Tool Company</owners>
-    <licenseUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api/blob/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api</projectUrl>
     <iconUrl>http://i63.tinypic.com/ka5l44.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>REST Api response formatting that adds an error ID to the response message when an error has occurred, includes model validation and testing utilities.</description>
+    <description>We developed some useful Web API enhancements that make error handling and response formatting much less painful and decided to share it with the world. Check out the GitHub page for more info.</description>
     <releaseNotes>Bug fixes and stability improvements.</releaseNotes>
-    <copyright>Copyright © Ridge Tool Company 2018</copyright>
-    <tags>Rest API Error RestApi Ridgid Validation ErrorId</tags>
+    <copyright>Copyright © Ridge Tool Company 2019</copyright>
+    <tags>REST API Error RestApi RIDGID Validation</tags>
   </metadata>
 </package>
