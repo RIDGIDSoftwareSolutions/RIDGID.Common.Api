@@ -61,6 +61,7 @@
     <Compile Include="Attributes\RidgidValidationAttribute.cs" />
     <Compile Include="ExceptionHandlers\RidgidApiExceptionHandler.cs" />
     <Compile Include="Exceptions\InvalidModelAttributesException.cs" />
+    <Compile Include="Objects\Response.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
