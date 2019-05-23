@@ -62,8 +62,8 @@ namespace RIDGID.Common.Api.TestingUtilities
             }
             else if (FieldIsEnumerable(expectedResult))
             {
-                var returnedList = ((IEnumerable<object>)returnedResult).ToList();
-                var expectedList = ((IEnumerable<object>)expectedResult).ToList();
+                var returnedList = ((IEnumerable)returnedResult).Cast<object>().ToList();
+                var expectedList = ((IEnumerable)expectedResult).Cast<object>().ToList();
 
                 for (var i = 0; i < returnedList.Count; i++)
                 {

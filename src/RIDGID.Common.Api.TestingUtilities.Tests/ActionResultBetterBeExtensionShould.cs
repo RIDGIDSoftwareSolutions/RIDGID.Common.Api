@@ -290,6 +290,55 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
             actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
         }
 
+        [Test]
+        public void ReturnAssertExceptionForNotMatchingResponseThatContainsListOfValueType()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsListOfValueType()
+            {
+                IntegerList = new List<int>
+                {
+                    1,
+                    2,
+                    3
+                }
+            };
+
+            var returnedResult = new TestObjectThatContainsListOfValueType
+            {
+                IntegerList = new List<int>
+                {
+                    1,
+                    3,
+                    4
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, returnedResult);
+
+            //--Act/Assert
+            Should.Throw<ShouldAssertException>(() => actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult));
+        }
+
+        [Test]
+        public void NotThrowExceptionForMatchingResponseThatContainsListOfValueType()
+        {
+            //--Arrange
+            var expectedResult = new TestObjectThatContainsListOfValueType()
+            {
+                IntegerList = new List<int>
+                {
+                    1,
+                    2,
+                    3
+                }
+            };
+
+            var actionResult = new HttpGenericResult(new RidgidApiController(), HttpStatusCode.BadRequest, expectedResult);
+
+            //--Act/Assert
+            actionResult.BetterBe(HttpStatusCode.BadRequest, expectedResult);
+        }
 
         [Test]
         public void ReturnAssertExceptionForNotMatchingResponseThatContainsListInsideList()
@@ -451,6 +500,11 @@ namespace RIDGID.Common.Api.TestingUtilities.Tests
     public class TestObjectThatContainsList
     {
         public List<TestObject> ItemList { get; set; }
+    }
+
+    public class TestObjectThatContainsListOfValueType
+    {
+        public List<int> IntegerList { get; set; }
     }
 
     public class TestObject
