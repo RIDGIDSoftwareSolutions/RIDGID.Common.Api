@@ -7,11 +7,10 @@
     <owners>Ridge Tool Company</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api</projectUrl>
-    <iconUrl>http://i63.tinypic.com/ka5l44.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>We developed some useful Web API enhancements that make error handling and response formatting much less painful and decided to share it with the world. Check out the GitHub page for more info.</description>
     <releaseNotes>Bug fixes and stability improvements.</releaseNotes>
-    <copyright>Copyright © Ridge Tool Company 2019</copyright>
+    <copyright>Copyright © RIDGID Software Solutions 2021</copyright>
     <tags>REST API Error RestApi RIDGID Validation</tags>
   </metadata>
 </package>

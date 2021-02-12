@@ -47,6 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\RIDGID.Common.Api.CommonAssemblyVersion.cs">
+      <Link>Properties\RIDGID.Common.Api.CommonAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Attributes\RidgidAuthorizeAttribute.cs" />
     <Compile Include="Attributes\RidgidIso8601DateTimeAttribute.cs" />
     <Compile Include="Attributes\RidgidEmailAddressAttribute.cs" />

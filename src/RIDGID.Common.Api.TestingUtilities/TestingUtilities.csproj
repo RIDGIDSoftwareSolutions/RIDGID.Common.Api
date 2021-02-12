@@ -49,6 +49,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\RIDGID.Common.Api.CommonAssemblyVersion.cs">
+      <Link>Properties\RIDGID.Common.Api.CommonAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="ActionResultBetterBeExtension.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Exceptions\RidgidIso8601DateTimeAttributeNotFoundException.cs" />
