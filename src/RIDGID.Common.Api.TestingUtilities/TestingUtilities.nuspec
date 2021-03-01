@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>RIDGID.Common.Api</id>
+    <version>$version$</version>
+    <title>RIDGID.Common.Api</title>
+    <authors>Ridge Tool Company</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api</projectUrl>
+    <description>We developed some useful Web API enhancements that make error handling and response formatting much less painful and decided to share it with the world. Check out the GitHub page for more info.</description>
+    <copyright>Copyright © RIDGID Software Solutions 2021</copyright>
+    <tags>REST API Error RestApi RIDGID Validation</tags>
+  </metadata>
+</package>
