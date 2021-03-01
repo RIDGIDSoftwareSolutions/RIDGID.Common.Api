@@ -30,7 +30,7 @@ namespace RIDGID.Common.Api.TestingUtilities
         // Checks that an actionresult is equal to the expected result, and that the status code and optional location
         // header are what is expected
         public static void BetterBe<TModelType>(this IHttpActionResult actionResult,
-            HttpStatusCode expectedStatusCode, TModelType expectedResult, string expectedLocationHeader = null)
+            HttpStatusCode expectedStatusCode, TModelType expectedResult, string expectedLocationHeader = null) where TModelType : class
         {
             var contentAsString = Content(actionResult, expectedStatusCode, false);
             TModelType returnedModel;
@@ -50,7 +50,7 @@ namespace RIDGID.Common.Api.TestingUtilities
             CheckLocationHeader(actionResult, expectedLocationHeader);
         }
 
-        private static void AssertThatTwoObjectsAreTheSame<TModelType>(TModelType returnedResult, TModelType expectedResult)
+        private static void AssertThatTwoObjectsAreTheSame<TModelType>(TModelType returnedResult, TModelType expectedResult) where TModelType : class
         {
             if (expectedResult == null)
             {
