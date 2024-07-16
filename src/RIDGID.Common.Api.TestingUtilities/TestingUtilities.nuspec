@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>RIDGID.Common.Api</id>
+    <id>RIDGID.Common.Api.TestingUtilities</id>
     <version>$version$</version>
     <title>RIDGID.Common.Api.TestingUtilties</title>
     <authors>Ridge Tool Company</authors>
