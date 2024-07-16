@@ -3,7 +3,7 @@
   <metadata>
     <id>RIDGID.Common.Api</id>
     <version>$version$</version>
-    <title>RIDGID.Common.Api.TestingUtilties</title>
+    <title>RIDGID.Common.Api</title>
     <authors>Ridge Tool Company</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/RIDGIDSoftwareSolutions/RIDGID.Common.Api/blob/master/LICENSE</licenseUrl>
